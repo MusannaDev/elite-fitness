@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/elite-fitness-api/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/elite-fitness-api/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/elite-fitness-api",
+  "projects": {
+    "elite-fitness-api": {
+      "type": "application",
+      "root": "apps/elite-fitness-api",
+      "entryFile": "main",
+      "sourceRoot": "apps/elite-fitness-api/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/elite-fitness-api/tsconfig.app.json"
+      }
+    },
+    "elite-fitness-batch": {
+      "type": "application",
+      "root": "apps/elite-fitness-batch",
+      "entryFile": "main",
+      "sourceRoot": "apps/elite-fitness-batch/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/elite-fitness-batch/tsconfig.app.json"
+      }
+    }
+  }
+}
