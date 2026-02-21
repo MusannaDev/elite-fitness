@@ -122,4 +122,4 @@ const ProductSchema = new Schema(
 ProductSchema.index({productName: 1, productBrand: 1, productWeight: 1, productFlavor: 1,      
   }, { unique: true });
 
-export const ProductModel = mongoose.model("Product", ProductSchema);
+export default ProductSchema;

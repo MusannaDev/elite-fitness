@@ -44,6 +44,9 @@ export class LoginInput {
   memberPassword: string;
 }
 
+
+//  AGENT
+
 @InputType()
 class AISearch {
   @IsOptional()
@@ -78,6 +81,44 @@ export class AgentsInquiry {
 
 }
 
+// TRAINER
+
+@InputType()
+class TISearch {
+  @IsOptional()
+  @Field(() => String, { nullable: true })
+  text?: string;
+}
+
+@InputType()
+export class TrainersInquiry {
+  @IsNotEmpty()
+  @Min(1)
+  @Field(() => Int)
+  page: number;
+
+  @IsNotEmpty()
+  @Min(1)
+  @Field(() => Int)
+  limit: number;
+
+  @IsOptional()
+  @IsIn(availableAgentSorts)
+  @Field(() => String, { nullable: true })
+  sort?: string;
+
+  @IsOptional()
+  @Field(() => Direction, { nullable: true })
+  direction?: Direction;
+
+  @IsNotEmpty()
+  @Field(() => TISearch,)
+  search: TISearch;
+
+}
+
+
+// MEMBER 
 
 @InputType()
 class MISearch {
