@@ -1,73 +1,70 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import type { ObjectId } from "mongoose";
 import {
-  ProductBenefits,
-  ProductCategory,
-  ProductFlavor,
-  ProductStatus,
-  ProductWeight,
-} from "../../enums/product.enum";
+  EquipmentCategory,
+  EquipmentLocation,
+  EquipmentMaterial,
+  EquipmentStatus,
+  EquipmentWeightCapacity,
+} from "../../enums/equipment.enum";
 import { Member, TotalCounter } from "../member/member";
 import { MeLiked } from "../like/like";
 
 @ObjectType()
-export class Product {
+export class Equipment {
   @Field(() => String)
   _id: ObjectId;
 
-  @Field(() => ProductCategory)
-  productCategory: ProductCategory;
+  @Field(() => EquipmentCategory)
+  equipmentCategory: EquipmentCategory;
 
-  @Field(() => ProductStatus)
-  productStatus: ProductStatus;
-
-  @Field(() => String)
-  productName: string;
+  @Field(() => EquipmentStatus)
+  equipmentStatus: EquipmentStatus;
 
   @Field(() => String)
-  productBrand: string;
+  equipmentName: string;
+
+  @Field(() => String)
+  equipmentBrand: string;
 
   @Field(() => Number)
-  productPrice: number;
+  equipmentPrice: number;
 
-  @Field(() => ProductWeight)
-  productWeight: ProductWeight;
+  @Field(() => EquipmentMaterial)
+  equipmentMaterial: EquipmentMaterial;
+
+  @Field(() => EquipmentWeightCapacity, { nullable: true })
+  equipmentWeightCapacity?: EquipmentWeightCapacity;
+
+  @Field(() => EquipmentLocation)
+  equipmentLocation: EquipmentLocation;
+
+  @Field(() => Number, { nullable: true })
+  equipmentWeight?: number;
 
   @Field(() => Int)
-  productLeftCount: number;
-
-  @Field(() => ProductBenefits)
-  productBenefits: ProductBenefits;
-
-  @Field(() => ProductFlavor)
-  productFlavor: ProductFlavor;
-
-  @Field(() => Int)
-  productCalories: number;
-
-  @Field(() => Number)
-  productProteinPerServing: number;
-
-  @Field(() => String, { nullable: true })
-  productDesc?: string;
+  equipmentLeftCount: number;
 
   @Field(() => [String])
-  productImages: string[];
+  equipmentImages: string[];
+
+  @Field(() => String, { nullable: true })
+  equipmentDesc?: string;
 
   @Field(() => Boolean)
   isBestseller: boolean;
 
   @Field(() => Int)
-  productViews: number;
+  equipmentViews: number;
 
   @Field(() => Int)
-  productLikes: number;
+  equipmentLikes: number;
 
   @Field(() => Int)
-  productComments: number;
+  equipmentComments: number;
 
   @Field(() => Int)
-  productRank: number;
+  equipmentRank: number;
 
   @Field(() => String)
   memberId: ObjectId;
@@ -93,9 +90,9 @@ export class Product {
 }
 
 @ObjectType()
-export class Products {
-  @Field(() => [Product])
-  list: Product[];
+export class Equipments {
+  @Field(() => [Equipment])
+  list: Equipment[];
 
   @Field(() => [TotalCounter], { nullable: true })
   metaCounter: TotalCounter[];

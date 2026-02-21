@@ -4,10 +4,10 @@ import * as path from 'path';
 import { T } from "./types/common";
 import { pipeline } from "stream";
 
-export const avaialableAgentSorts = ["createdAt", "updatedAt", "memberLikes", "memberViews", "memberRank"];
-export const avaialableMemberSorts = ["createdAt", "updatedAt", "memberLikes", "memberViews"];
+export const availableAgentSorts = ["createdAt", "updatedAt", "memberLikes", "memberViews", "memberRank"];
+export const availableMemberSorts = ["createdAt", "updatedAt", "memberLikes", "memberViews"];
 export const availableOptions = ['propertyBarter', 'propertyRent'];
-export const avaialablePropertySorts = [
+export const availablePropertySorts = [
 	"createdAt", 
 	"updatedAt", 
 	"propertyLikes", 
@@ -15,8 +15,13 @@ export const avaialablePropertySorts = [
 	"propertyRank", 
 	"propertyPrice",
 ];
-export const avaialableBoardArticleSorts = ["createdAt", "updatedAt", "articleLikes", "articleViews"];
-export const avaialableCommentSorts = ["createdAt", "updatedAt",];
+export const availableBoardArticleSorts = ["createdAt", "updatedAt", "articleLikes", "articleViews"];
+export const availableCommentSorts = ["createdAt", "updatedAt",];
+
+export const availableProductSorts = ["productPrice", "productViews", "productLikes", "productRank", "createdAt"];
+export const availableEquipmentSorts = ["equipmentPrice", "equipmentViews", "equipmentLikes", "equipmentRank", "createdAt"];
+
+export const availableClothesSorts = ["clothesPrice", "clothesViews", "clothesLikes", "clothesRank", "createdAt"];
 
 // IMAGE CONFIGURATION 
 

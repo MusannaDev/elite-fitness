@@ -41,7 +41,7 @@ const PropertySchema = new Schema(
 			required: true,
 		},
 
-		propertyBeds: {
+		propertyBaths: {
 			type: Number,
 			required: true,
 		},

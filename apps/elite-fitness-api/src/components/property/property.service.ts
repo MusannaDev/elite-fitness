@@ -152,7 +152,7 @@ export class PropertyService {
     if (memberId) match.memberId = shapeIntoMongoObjectId(memberId);
     if (locationList && locationList.length) match.propertyLocation = { $in: locationList };
     if (roomsList && roomsList.length) match.propertyRooms = { $in: roomsList };
-    if (bedsList && bedsList.length) match.propertyBeds = { $in: bedsList };
+    if (bedsList && bedsList.length) match.propertyBaths = { $in: bedsList };
     if (typeList && typeList.length) match.propertyType = { $in: typeList };
 
     if (pricesRange) match.propertyPrice = { $gte: pricesRange.start, $lte: pricesRange.end };

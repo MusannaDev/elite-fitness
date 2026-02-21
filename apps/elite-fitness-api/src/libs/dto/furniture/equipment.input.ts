@@ -1,23 +1,14 @@
 import { Field, InputType, Int } from "@nestjs/graphql";
+import { IsIn, IsInt, IsNotEmpty, IsOptional, Length, Min } from "class-validator";
 import {
-  IsBoolean,
-  IsIn,
-  IsInt,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  Length,
-  Min,
-} from "class-validator";
-import {
-  ProductBenefits,
-  ProductCategory,
-  ProductFlavor,
-  ProductStatus,
-  ProductWeight,
-} from "../../enums/product.enum";
+  EquipmentCategory,
+  EquipmentLocation,
+  EquipmentMaterial,
+  EquipmentStatus,
+  EquipmentWeightCapacity,
+} from "../../enums/equipment.enum";
 import { Direction } from "../../enums/common.enum";
-import { availableProductSorts } from "../../config";
+import { availableEquipmentSorts } from "../../config";
 import type { ObjectId } from "mongoose";
 
 // ============================================================
@@ -25,65 +16,57 @@ import type { ObjectId } from "mongoose";
 // ============================================================
 
 @InputType()
-export class ProductInput {
+export class EquipmentInput {
   @IsNotEmpty()
-  @Field(() => ProductCategory)
-  productCategory: ProductCategory;
+  @Field(() => EquipmentCategory)
+  equipmentCategory: EquipmentCategory;
+
+  @IsNotEmpty()
+  @Length(3, 100)
+  @Field(() => String)
+  equipmentName: string;
 
   @IsNotEmpty()
   @Length(2, 100)
   @Field(() => String)
-  productName: string;
+  equipmentBrand: string;
 
   @IsNotEmpty()
-  @Field(() => String)
-  productBrand: string;
-
-  @IsNotEmpty()
-  @IsNumber()
-  @Min(0)
   @Field(() => Number)
-  productPrice: number;
+  equipmentPrice: number;
 
   @IsNotEmpty()
-  @Field(() => ProductWeight)
-  productWeight: ProductWeight;
+  @Field(() => EquipmentMaterial)
+  equipmentMaterial: EquipmentMaterial;
+
+  @IsNotEmpty()
+  @Field(() => EquipmentLocation)
+  equipmentLocation: EquipmentLocation;
 
   @IsNotEmpty()
   @IsInt()
   @Min(1)
   @Field(() => Int)
-  productLeftCount: number;
-
-  @IsNotEmpty()
-  @Field(() => ProductBenefits)
-  productBenefits: ProductBenefits;
-
-  @IsNotEmpty()
-  @Field(() => ProductFlavor)
-  productFlavor: ProductFlavor;
-
-  @IsNotEmpty()
-  @IsInt()
-  @Field(() => Int)
-  productCalories: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  @Field(() => Number)
-  productProteinPerServing: number;
+  equipmentLeftCount: number;
 
   @IsNotEmpty()
   @Field(() => [String])
-  productImages: string[];
+  equipmentImages: string[];
+
+  @IsOptional()
+  @Field(() => EquipmentWeightCapacity, { nullable: true })
+  equipmentWeightCapacity?: EquipmentWeightCapacity;
+
+  @IsOptional()
+  @Field(() => Number, { nullable: true })
+  equipmentWeight?: number;
 
   @IsOptional()
   @Length(5, 500)
   @Field(() => String, { nullable: true })
-  productDesc?: string;
+  equipmentDesc?: string;
 
   @IsOptional()
-  @IsBoolean()
   @Field(() => Boolean, { nullable: true })
   isBestseller?: boolean;
 
@@ -113,26 +96,26 @@ export class PeriodsRange {
 }
 
 @InputType()
-class PISearch {
+class EISearch {
   @IsOptional()
   @Field(() => String, { nullable: true })
   memberId?: ObjectId;
 
   @IsOptional()
-  @Field(() => [ProductCategory], { nullable: true })
-  categoryList?: ProductCategory[];
+  @Field(() => [EquipmentCategory], { nullable: true })
+  categoryList?: EquipmentCategory[];
 
   @IsOptional()
-  @Field(() => [ProductWeight], { nullable: true })
-  weightList?: ProductWeight[];
+  @Field(() => [EquipmentMaterial], { nullable: true })
+  materialList?: EquipmentMaterial[];
 
   @IsOptional()
-  @Field(() => [ProductFlavor], { nullable: true })
-  flavorList?: ProductFlavor[];
+  @Field(() => [EquipmentLocation], { nullable: true })
+  locationList?: EquipmentLocation[];
 
   @IsOptional()
-  @Field(() => [ProductBenefits], { nullable: true })
-  benefitsList?: ProductBenefits[];
+  @Field(() => [EquipmentWeightCapacity], { nullable: true })
+  weightCapacityList?: EquipmentWeightCapacity[];
 
   @IsOptional()
   @Field(() => PricesRange, { nullable: true })
@@ -148,7 +131,7 @@ class PISearch {
 }
 
 @InputType()
-export class ProductsInquiry {
+export class EquipmentsInquiry {
   @IsNotEmpty()
   @Min(1)
   @Field(() => Int)
@@ -160,7 +143,7 @@ export class ProductsInquiry {
   limit: number;
 
   @IsOptional()
-  @IsIn(availableProductSorts)
+  @IsIn(availableEquipmentSorts)
   @Field(() => String, { nullable: true })
   sort?: string;
 
@@ -169,8 +152,8 @@ export class ProductsInquiry {
   direction?: Direction;
 
   @IsNotEmpty()
-  @Field(() => PISearch)
-  search: PISearch;
+  @Field(() => EISearch)
+  search: EISearch;
 }
 
 // ============================================================
@@ -178,14 +161,14 @@ export class ProductsInquiry {
 // ============================================================
 
 @InputType()
-class APISearch {
+class AEISearch {
   @IsOptional()
-  @Field(() => ProductStatus, { nullable: true })
-  productStatus?: ProductStatus;
+  @Field(() => EquipmentStatus, { nullable: true })
+  equipmentStatus?: EquipmentStatus;
 }
 
 @InputType()
-export class AgentProductsInquiry {
+export class AgentEquipmentsInquiry {
   @IsNotEmpty()
   @Min(1)
   @Field(() => Int)
@@ -197,7 +180,7 @@ export class AgentProductsInquiry {
   limit: number;
 
   @IsOptional()
-  @IsIn(availableProductSorts)
+  @IsIn(availableEquipmentSorts)
   @Field(() => String, { nullable: true })
   sort?: string;
 
@@ -206,8 +189,8 @@ export class AgentProductsInquiry {
   direction?: Direction;
 
   @IsNotEmpty()
-  @Field(() => APISearch)
-  search: APISearch;
+  @Field(() => AEISearch)
+  search: AEISearch;
 }
 
 // ============================================================
@@ -215,18 +198,18 @@ export class AgentProductsInquiry {
 // ============================================================
 
 @InputType()
-class ALPISearch {
+class ALEISearch {
   @IsOptional()
-  @Field(() => ProductStatus, { nullable: true })
-  productStatus?: ProductStatus;
+  @Field(() => EquipmentStatus, { nullable: true })
+  equipmentStatus?: EquipmentStatus;
 
   @IsOptional()
-  @Field(() => [ProductCategory], { nullable: true })
-  categoryList?: ProductCategory[];
+  @Field(() => [EquipmentCategory], { nullable: true })
+  categoryList?: EquipmentCategory[];
 }
 
 @InputType()
-export class AllProductsInquiry {
+export class AllEquipmentsInquiry {
   @IsNotEmpty()
   @Min(1)
   @Field(() => Int)
@@ -238,7 +221,7 @@ export class AllProductsInquiry {
   limit: number;
 
   @IsOptional()
-  @IsIn(availableProductSorts)
+  @IsIn(availableEquipmentSorts)
   @Field(() => String, { nullable: true })
   sort?: string;
 
@@ -247,8 +230,8 @@ export class AllProductsInquiry {
   direction?: Direction;
 
   @IsNotEmpty()
-  @Field(() => ALPISearch)
-  search: ALPISearch;
+  @Field(() => ALEISearch)
+  search: ALEISearch;
 }
 
 // ============================================================

@@ -1,23 +1,15 @@
 import { Field, InputType, Int } from "@nestjs/graphql";
+import { IsIn, IsInt, IsNotEmpty, IsOptional, Length, Min } from "class-validator";
 import {
-  IsBoolean,
-  IsIn,
-  IsInt,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  Length,
-  Min,
-} from "class-validator";
-import {
-  ProductBenefits,
-  ProductCategory,
-  ProductFlavor,
-  ProductStatus,
-  ProductWeight,
-} from "../../enums/product.enum";
+  ClothesCategory,
+  ClothesColor,
+  ClothesGender,
+  ClothesMaterial,
+  ClothesSize,
+  ClothesStatus,
+} from "../../enums/clothes.enum";
 import { Direction } from "../../enums/common.enum";
-import { availableProductSorts } from "../../config";
+import { availableClothesSorts } from "../../config";
 import type { ObjectId } from "mongoose";
 
 // ============================================================
@@ -25,65 +17,57 @@ import type { ObjectId } from "mongoose";
 // ============================================================
 
 @InputType()
-export class ProductInput {
+export class ClothesInput {
   @IsNotEmpty()
-  @Field(() => ProductCategory)
-  productCategory: ProductCategory;
+  @Field(() => ClothesCategory)
+  clothesCategory: ClothesCategory;
+
+  @IsNotEmpty()
+  @Length(3, 100)
+  @Field(() => String)
+  clothesName: string;
 
   @IsNotEmpty()
   @Length(2, 100)
   @Field(() => String)
-  productName: string;
+  clothesBrand: string;
 
   @IsNotEmpty()
-  @Field(() => String)
-  productBrand: string;
-
-  @IsNotEmpty()
-  @IsNumber()
-  @Min(0)
   @Field(() => Number)
-  productPrice: number;
+  clothesPrice: number;
 
   @IsNotEmpty()
-  @Field(() => ProductWeight)
-  productWeight: ProductWeight;
+  @Field(() => ClothesMaterial)
+  clothesMaterial: ClothesMaterial;
+
+  @IsNotEmpty()
+  @Field(() => ClothesSize)
+  clothesSize: ClothesSize;
+
+  @IsNotEmpty()
+  @Field(() => ClothesGender)
+  clothesGender: ClothesGender;
+
+  @IsNotEmpty()
+  @Field(() => ClothesColor)
+  clothesColor: ClothesColor;
 
   @IsNotEmpty()
   @IsInt()
   @Min(1)
   @Field(() => Int)
-  productLeftCount: number;
-
-  @IsNotEmpty()
-  @Field(() => ProductBenefits)
-  productBenefits: ProductBenefits;
-
-  @IsNotEmpty()
-  @Field(() => ProductFlavor)
-  productFlavor: ProductFlavor;
-
-  @IsNotEmpty()
-  @IsInt()
-  @Field(() => Int)
-  productCalories: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  @Field(() => Number)
-  productProteinPerServing: number;
+  clothesLeftCount: number;
 
   @IsNotEmpty()
   @Field(() => [String])
-  productImages: string[];
+  clothesImages: string[];
 
   @IsOptional()
   @Length(5, 500)
   @Field(() => String, { nullable: true })
-  productDesc?: string;
+  clothesDesc?: string;
 
   @IsOptional()
-  @IsBoolean()
   @Field(() => Boolean, { nullable: true })
   isBestseller?: boolean;
 
@@ -113,26 +97,30 @@ export class PeriodsRange {
 }
 
 @InputType()
-class PISearch {
+class CISearch {
   @IsOptional()
   @Field(() => String, { nullable: true })
   memberId?: ObjectId;
 
   @IsOptional()
-  @Field(() => [ProductCategory], { nullable: true })
-  categoryList?: ProductCategory[];
+  @Field(() => [ClothesCategory], { nullable: true })
+  categoryList?: ClothesCategory[];
 
   @IsOptional()
-  @Field(() => [ProductWeight], { nullable: true })
-  weightList?: ProductWeight[];
+  @Field(() => [ClothesMaterial], { nullable: true })
+  materialList?: ClothesMaterial[];
 
   @IsOptional()
-  @Field(() => [ProductFlavor], { nullable: true })
-  flavorList?: ProductFlavor[];
+  @Field(() => [ClothesSize], { nullable: true })
+  sizeList?: ClothesSize[];
 
   @IsOptional()
-  @Field(() => [ProductBenefits], { nullable: true })
-  benefitsList?: ProductBenefits[];
+  @Field(() => [ClothesGender], { nullable: true })
+  genderList?: ClothesGender[];
+
+  @IsOptional()
+  @Field(() => [ClothesColor], { nullable: true })
+  colorList?: ClothesColor[];
 
   @IsOptional()
   @Field(() => PricesRange, { nullable: true })
@@ -148,7 +136,7 @@ class PISearch {
 }
 
 @InputType()
-export class ProductsInquiry {
+export class ClothesInquiry {
   @IsNotEmpty()
   @Min(1)
   @Field(() => Int)
@@ -160,7 +148,7 @@ export class ProductsInquiry {
   limit: number;
 
   @IsOptional()
-  @IsIn(availableProductSorts)
+  @IsIn(availableClothesSorts)
   @Field(() => String, { nullable: true })
   sort?: string;
 
@@ -169,8 +157,8 @@ export class ProductsInquiry {
   direction?: Direction;
 
   @IsNotEmpty()
-  @Field(() => PISearch)
-  search: PISearch;
+  @Field(() => CISearch)
+  search: CISearch;
 }
 
 // ============================================================
@@ -178,14 +166,14 @@ export class ProductsInquiry {
 // ============================================================
 
 @InputType()
-class APISearch {
+class ACISearch {
   @IsOptional()
-  @Field(() => ProductStatus, { nullable: true })
-  productStatus?: ProductStatus;
+  @Field(() => ClothesStatus, { nullable: true })
+  clothesStatus?: ClothesStatus;
 }
 
 @InputType()
-export class AgentProductsInquiry {
+export class AgentClothesInquiry {
   @IsNotEmpty()
   @Min(1)
   @Field(() => Int)
@@ -197,7 +185,7 @@ export class AgentProductsInquiry {
   limit: number;
 
   @IsOptional()
-  @IsIn(availableProductSorts)
+  @IsIn(availableClothesSorts)
   @Field(() => String, { nullable: true })
   sort?: string;
 
@@ -206,8 +194,8 @@ export class AgentProductsInquiry {
   direction?: Direction;
 
   @IsNotEmpty()
-  @Field(() => APISearch)
-  search: APISearch;
+  @Field(() => ACISearch)
+  search: ACISearch;
 }
 
 // ============================================================
@@ -215,18 +203,18 @@ export class AgentProductsInquiry {
 // ============================================================
 
 @InputType()
-class ALPISearch {
+class ALCISearch {
   @IsOptional()
-  @Field(() => ProductStatus, { nullable: true })
-  productStatus?: ProductStatus;
+  @Field(() => ClothesStatus, { nullable: true })
+  clothesStatus?: ClothesStatus;
 
   @IsOptional()
-  @Field(() => [ProductCategory], { nullable: true })
-  categoryList?: ProductCategory[];
+  @Field(() => [ClothesCategory], { nullable: true })
+  categoryList?: ClothesCategory[];
 }
 
 @InputType()
-export class AllProductsInquiry {
+export class AllClothesInquiry {
   @IsNotEmpty()
   @Min(1)
   @Field(() => Int)
@@ -238,7 +226,7 @@ export class AllProductsInquiry {
   limit: number;
 
   @IsOptional()
-  @IsIn(availableProductSorts)
+  @IsIn(availableClothesSorts)
   @Field(() => String, { nullable: true })
   sort?: string;
 
@@ -247,8 +235,8 @@ export class AllProductsInquiry {
   direction?: Direction;
 
   @IsNotEmpty()
-  @Field(() => ALPISearch)
-  search: ALPISearch;
+  @Field(() => ALCISearch)
+  search: ALCISearch;
 }
 
 // ============================================================

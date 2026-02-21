@@ -112,7 +112,7 @@ export class SocketGateway implements OnGatewayInit {
       if(client !== sender && client.readyState === WebSocket.OPEN) {
         client.send(JSON.stringify(message));
       }
-    })
+    });
   }
 
 }

@@ -34,3 +34,15 @@ export enum ProductWeight {
   THREE_KG = "3KG",           // 3 kg
   FIVE_KG = "5KG",           // 5 kg         
 }
+
+export enum ProductBenefits {
+  MUSCLE_GROWTH = "MUSCLE_GROWTH",         // Mushak o'sishi
+  WEIGHT_LOSS = "WEIGHT_LOSS",             // Vazn yo'qotish
+  ENERGY_BOOST = "ENERGY_BOOST",           // Energiya berish
+  RECOVERY = "RECOVERY",                   // Tiklash
+  ENDURANCE = "ENDURANCE",                 // Chidamlilik
+  IMMUNE_SUPPORT = "IMMUNE_SUPPORT",       // Immunitet
+  JOINT_HEALTH = "JOINT_HEALTH",           // Bo'g'im sog'lig'i
+  FAT_BURNING = "FAT_BURNING",             // Yog' yoqish
+  HYDRATION = "HYDRATION",                 // Suv balansi
+}

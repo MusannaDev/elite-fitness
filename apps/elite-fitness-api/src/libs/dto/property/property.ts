@@ -31,7 +31,7 @@ export class Property {
   propertySquare: number;
 
   @Field(() => Int)
-  propertyBeds: number;
+  propertyBaths: number;
 
   @Field(() => Int)
   propertyRooms: number;
