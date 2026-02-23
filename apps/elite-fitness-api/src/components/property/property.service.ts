@@ -45,7 +45,7 @@ export class PropertyService {
   }
 
 
-  public async getProperty(memberId: ObjectId ,propertyId: ObjectId): Promise<Property> {
+  public async getProperty(memberId: ObjectId, propertyId: ObjectId): Promise<Property> {
     const search: T = {
       _id: propertyId,
       propertyStatus: PropertyStatus.ACTIVE,

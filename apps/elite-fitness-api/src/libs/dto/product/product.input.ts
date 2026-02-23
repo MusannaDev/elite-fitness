@@ -174,18 +174,18 @@ export class ProductsInquiry {
 }
 
 // ============================================================
-//                     INQUIRY - AGENT
+//                     INQUIRY - TRAINER
 // ============================================================
 
 @InputType()
-class APISearch {
+class TPISearch {
   @IsOptional()
   @Field(() => ProductStatus, { nullable: true })
   productStatus?: ProductStatus;
 }
 
 @InputType()
-export class AgentProductsInquiry {
+export class TrainerProductsInquiry {
   @IsNotEmpty()
   @Min(1)
   @Field(() => Int)
@@ -206,8 +206,8 @@ export class AgentProductsInquiry {
   direction?: Direction;
 
   @IsNotEmpty()
-  @Field(() => APISearch)
-  search: APISearch;
+  @Field(() => TPISearch)
+  search: TPISearch;
 }
 
 // ============================================================
@@ -256,7 +256,7 @@ export class AllProductsInquiry {
 // ============================================================
 
 @InputType()
-export class OrdinaryInquiry {
+export class ProductOrdinaryInquiry {
   @IsNotEmpty()
   @Min(1)
   @Field(() => Int)

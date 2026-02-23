@@ -161,14 +161,14 @@ export class EquipmentsInquiry {
 // ============================================================
 
 @InputType()
-class AEISearch {
+class SMEISearch {
   @IsOptional()
   @Field(() => EquipmentStatus, { nullable: true })
   equipmentStatus?: EquipmentStatus;
 }
 
 @InputType()
-export class AgentEquipmentsInquiry {
+export class SalesManagerEquipmentsInquiry {
   @IsNotEmpty()
   @Min(1)
   @Field(() => Int)
@@ -189,8 +189,8 @@ export class AgentEquipmentsInquiry {
   direction?: Direction;
 
   @IsNotEmpty()
-  @Field(() => AEISearch)
-  search: AEISearch;
+  @Field(() => SMEISearch)
+  search: SMEISearch;
 }
 
 // ============================================================
@@ -239,7 +239,7 @@ export class AllEquipmentsInquiry {
 // ============================================================
 
 @InputType()
-export class OrdinaryInquiry {
+export class BasicInquiry {
   @IsNotEmpty()
   @Min(1)
   @Field(() => Int)

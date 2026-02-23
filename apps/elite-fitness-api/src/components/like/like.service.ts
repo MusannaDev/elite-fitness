@@ -13,6 +13,10 @@ import { OrdinaryInquiry } from '../../libs/dto/property/property.input';
 import { Properties } from '../../libs/dto/property/property';
 import { LikeGroup } from '../../libs/enums/like.enum';
 import { lookupFavorite } from '../../libs/config';
+import { Product, Products } from '../../libs/dto/product/product';
+import { Equipment, Equipments } from '../../libs/dto/equipment/equipment';
+import { BasicInquiry } from '../../libs/dto/equipment/equipment.input'
+import { ProductOrdinaryInquiry } from '../../libs/dto/product/product.input';
 
 @Injectable()
 export class LikeService {
@@ -82,6 +86,83 @@ export class LikeService {
     .exec();
 
     const result: Properties = {list: [], metaCounter: data[0].metaCounter};
+    result.list = data[0].list.map((ele) => ele.favoriteProperty);
+    
+    return result;
+  }
+
+  public async getFavoriteProducts(
+    memberId: ObjectId, input: ProductOrdinaryInquiry
+  ): Promise<Products> {
+    const {page, limit} = input;
+    const match: T = {likeGroup: LikeGroup.PRODUCT, memberId: memberId}
+
+    const data: T = await this.likeModel.aggregate([
+      {$match: match},
+      {$sort: { updatedAt: -1 }},
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'likeRefId',
+          foreignField: '_id',
+          as: 'favoriteProduct',
+        }
+      },
+      { $unwind: "$favoriteProduct" },
+      {
+        $facet: {
+          list: [
+            {$skip: (page-1)*limit},
+            {$limit: limit},
+            lookupFavorite,
+            { $unwind: "$favoriteProduct.memberData" },
+          ],
+          metaCounter: [{ $count: "total" }],
+        },
+      },
+    ])
+    .exec();
+
+    const result: Products = {list: [], metaCounter: data[0].metaCounter};
+    result.list = data[0].list.map((ele) => ele.favoriteProperty);
+    
+    return result;
+  }
+
+
+  public async getFavoriteEquipments(
+    memberId: ObjectId, input: BasicInquiry
+  ): Promise<Equipments> {
+    const {page, limit} = input;
+    const match: T = {likeGroup: LikeGroup.EQUIPMENT, memberId: memberId}
+
+    const data: T = await this.likeModel.aggregate([
+      {$match: match},
+      {$sort: { updatedAt: -1 }},
+      {
+        $lookup: {
+          from: 'equipments',
+          localField: 'likeRefId',
+          foreignField: '_id',
+          as: 'favoriteEquipment',
+        }
+      },
+      { $unwind: "$favoriteEquipment" },
+      {
+        $facet: {
+          list: [
+            {$skip: (page-1)*limit},
+            {$limit: limit},
+            lookupFavorite,
+            { $unwind: "$favoriteEquipment.memberData" },
+          ],
+          metaCounter: [{ $count: "total" }],
+        },
+      },
+    ])
+    .exec();
+
+    const result: Equipments = {list: [], metaCounter: data[0].metaCounter};
     result.list = data[0].list.map((ele) => ele.favoriteProperty);
     
     return result;

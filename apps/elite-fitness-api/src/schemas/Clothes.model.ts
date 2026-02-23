@@ -122,4 +122,4 @@ ClothesSchema.index(
   { unique: true }
 );
 
-export const ClothesModel = mongoose.model("Clothes", ClothesSchema);
+export default ClothesSchema;

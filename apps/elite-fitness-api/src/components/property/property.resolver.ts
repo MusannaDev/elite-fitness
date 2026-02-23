@@ -116,7 +116,7 @@ export class PropertyResolver {
     @Args('input') input: AllPropertiesInquiry,
     @AuthMember('_id') memberId: ObjectId,
   ): Promise<Properties> {
-    console.log('Query: getAgentProperties');
+    console.log('Query: getAllPropertiesByAdmin');
     return await this.propertyService.getAllPropertiesByAdmin(input);
   }
 

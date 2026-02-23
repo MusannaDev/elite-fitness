@@ -1,12 +1,20 @@
-import { BadGatewayException, Injectable } from '@nestjs/common';
+import { BadGatewayException, BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Product } from '../../libs/dto/product/product';
+import { Model, ObjectId } from 'mongoose';
+import { Product, Products } from '../../libs/dto/product/product';
 import { MemberService } from '../member/member.service';
 import { ViewService } from '../view/view.service';
 import { LikeService } from '../like/like.service';
-import { Message } from '../../libs/enums/common.enum';
-import { ProductInput } from '../../libs/dto/product/product.input';
+import { Direction, Message } from '../../libs/enums/common.enum';
+import { AllProductsInquiry, ProductOrdinaryInquiry, ProductInput, ProductsInquiry, TrainerProductsInquiry } from '../../libs/dto/product/product.input';
+import { StatisticModifier, T } from '../../libs/types/common';
+import { ProductStatus } from '../../libs/enums/product.enum';
+import { ViewGroup } from '../../libs/enums/view.enum';
+import { LikeGroup } from '../../libs/enums/like.enum';
+import { LikeInput } from '../../libs/dto/like/like.input';
+import moment from 'moment';
+import { ProductUpdate } from '../../libs/dto/product/product.update';
+import { lookupAuthMemberLiked, lookupMember, shapeIntoMongoObjectId } from '../../libs/config';
 
 @Injectable()
 export class ProductService {
@@ -34,4 +42,277 @@ export class ProductService {
       throw new BadGatewayException(Message.CREATE_FAILED);
     }
   }
+
+  public async getProduct(memberId: ObjectId ,productId: ObjectId): Promise<Product> {
+    const search: T = {
+      _id: productId,
+      productStatus: ProductStatus.ACTIVE,
+    };
+    const targetProduct: Product = await this.productModel.findOne(search).lean().exec();
+    if(!targetProduct) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+
+    if(memberId) {
+      //record view
+      const viewInput = { memberId: memberId, viewRefId: productId, viewGroup: ViewGroup.PRODUCT }
+      const newView = await this.viewService.recordView(viewInput)
+      if (newView) {
+        // increase memberView
+        await this.productStatsEditor({ _id: productId, targetKey: 'productViews', modifier: 1 });
+        targetProduct.productViews++
+      }
+
+      // Me Liked
+      const likeInput: LikeInput = { memberId: memberId, likeRefId: productId, likeGroup: LikeGroup.PRODUCT };
+      targetProduct.meLiked = await this.likeService.checkLikeExistance(likeInput);
+      
+    }
+
+    targetProduct.memberData = await this.memberService.getMember(null, targetProduct.memberId);
+    return targetProduct;
+
+  }
+
+
+  public async updateProduct(memberId: ObjectId, input: ProductUpdate): Promise<Product> {
+    let { productStatus, soldAt, deletedAt } = input;
+    const search: T = {
+      _id: input._id,
+      memberId: memberId,
+      propertyStatus: ProductStatus.ACTIVE,
+    };
+
+    if (productStatus === ProductStatus.SOLD) soldAt = moment().toDate();
+    else if (productStatus === ProductStatus.DELETE) deletedAt = moment().toDate();
+
+    const result = await this.productModel
+      .findOneAndUpdate(search, input, {new: true})
+      .exec();
+
+    if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
+
+    if (soldAt || deletedAt) {
+      await this.memberService.memberStatsEditor({
+        _id: memberId,
+        targetKey: 'memberProducts',
+        modifier: -1,
+      });
+    }
+
+    return result;
+  }
+
+
+  public async getProducts(memberId: ObjectId, input: ProductsInquiry): Promise<Products> {
+    const match: T = { productStatus: ProductStatus.ACTIVE };
+    const sort: T = { [input?.sort ?? 'createdAt']: input?.direction ?? Direction.DESC };
+
+    this.shapeMatchQuery(match, input);
+    console.log('match:', match);
+
+    const result = await this.productModel
+      .aggregate([
+        { $match: match },
+        {
+          $facet: {
+            list: [
+              { $sort: sort },
+              { $skip: (input.page - 1) * input.limit },
+              { $limit: input.limit },
+              // meLiked
+              lookupAuthMemberLiked(memberId),
+              lookupMember,
+              { $unwind: '$memberData' },
+            ],
+            metaCounter: [{ $count: 'total' }],
+          },
+        },
+      ])
+      .exec();
+    if (!result.length) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+
+    return result[0];
+  }
+  
+  private shapeMatchQuery(match: T, input: ProductsInquiry): void {
+    const {
+      memberId,
+      categoryList,
+      weightList,
+      flavorList,
+      benefitsList,
+      periodsRange,
+      pricesRange,
+      text,
+    } = input.search;
+
+    if (memberId) match.memberId = shapeIntoMongoObjectId(memberId);
+    if (categoryList && categoryList.length) match.productCategory = { $in: categoryList };
+    if (weightList && weightList.length) match.productWeight = { $in: weightList };
+    if (flavorList && flavorList.length) match.productFlavor = { $in: flavorList };
+    if (benefitsList && benefitsList.length) match.productBenefits = { $in: benefitsList };
+
+    if (pricesRange) match.propertyPrice = { $gte: pricesRange.start, $lte: pricesRange.end };
+    if (periodsRange) match.createdAt = { $gte: periodsRange.start, $lte: periodsRange.end };
+
+    if (text) match.productTitle = { $regex: new RegExp(text, 'i') };
+  
+  }
+
+
+  public async getFavorites(
+    memberId: ObjectId, input: ProductOrdinaryInquiry
+  ): Promise<Products> {
+    return await this.likeService.getFavoriteProducts(memberId, input);
+  }
+
+  public async getVisited(
+    memberId: ObjectId, input: ProductOrdinaryInquiry
+  ): Promise<Products> {
+    return await this.viewService.getVisitedProducts(memberId, input);
+  }
+
+
+
+  public async getTrainerProducts(memberId: ObjectId, input: TrainerProductsInquiry): Promise<Product> {
+    const { productStatus } = input.search;
+    if (productStatus === ProductStatus.DELETE) throw new BadRequestException(Message.NOT_ALLOWED_REQUEST);
+
+    const match: T = {
+      memberId: memberId,
+      productStatus: productStatus ?? { $ne: ProductStatus.DELETE },
+    };
+    const sort: T = { [input?.sort ?? 'createdAt']: input?.direction ?? Direction.DESC };
+
+    const result = await this.productModel
+      .aggregate([
+        { $match: match },
+        { $sort: sort },
+        {
+          $facet: {
+            list: [
+              { $skip: (input.page - 1) * input.limit },
+              { $limit: input.limit },
+              lookupMember,
+              { $unwind: '$memberData' },
+            ],
+            metaCounter: [{ $count: 'total' }],
+          },
+        },
+      ])
+      .exec();
+    if (!result.length) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+
+    return result[0];
+  }
+
+
+  public async likeTargetProduct(memberId: ObjectId, likeRefId: ObjectId): Promise<Product> {
+      const target: Product = await this.productModel
+        .findOne({ _id: likeRefId, propertyStatus: ProductStatus.ACTIVE })
+        .exec();
+      if (!target) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+  
+      const input: LikeInput = {
+        memberId: memberId,
+        likeRefId: likeRefId,
+        likeGroup: LikeGroup.PRODUCT,
+      };
+  
+      // LIKE TOGGLE via like modules
+      const modifier: number = await this.likeService.toggleLike(input);
+      const result = await this.productStatsEditor({
+        _id: likeRefId,
+        targetKey: 'productLikes',
+        modifier: modifier
+      });
+      if(!result) throw new InternalServerErrorException(Message.SOMETHING_WENT_WRONG);
+  
+      return result;
+  
+    }
+  
+
+
+  /* ADMIN METHODS */
+
+
+  public async getAllProductsByAdmin(input: AllProductsInquiry): Promise<Products> {
+    const { productStatus, categoryList } = input.search;
+    const match: T = {};
+    const sort: T = { [input?.sort ?? 'createdAt']: input?.direction ?? Direction.DESC };
+
+    if(productStatus) match.propertyStatus = productStatus;
+    if(categoryList) match.propertyLocation = { $in: categoryList };
+
+    const result = await this.productModel
+      .aggregate([
+        { $match: match },
+        { $sort: sort },
+        {
+          $facet: {
+            list: [
+              { $skip: (input.page - 1) * input.limit },
+              { $limit: input.limit },
+              lookupMember,
+              { $unwind: '$memberData' },
+            ],
+            metaCounter: [{ $count: 'total' }],
+          },
+        },
+      ])
+      .exec();
+    if (!result.length) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+
+    return result[0];
+  }
+  
+  
+  public async updateProductByAdmin(input: ProductUpdate): Promise<Product> {
+    let { productStatus, soldAt, deletedAt } = input;
+    const search: T = {
+      _id: input._id,
+      productStatus: ProductStatus.ACTIVE,
+    };
+
+    if (productStatus === ProductStatus.SOLD) soldAt = moment().toDate();
+    else if (productStatus === ProductStatus.DELETE) deletedAt = moment().toDate();
+
+    const result = await this.productModel
+      .findOneAndUpdate(search, input, {
+        new: true,
+      })
+      .exec();
+    if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
+
+    if (soldAt || deletedAt) {
+      await this.memberService.memberStatsEditor({
+        _id: result.memberId,
+        targetKey: 'memberProducts',
+        modifier: -1,
+      });
+    }
+
+    return result;
+  }
+
+  public async removeProductByAdmin(productId: ObjectId): Promise<Product> {
+    const search: T = { _id: productId, propertyStatus: ProductStatus.DELETE };
+    const result = await this.productModel.findOneAndDelete(search).exec();
+    if(!result) throw new InternalServerErrorException(Message.REMOVE_FAILED);
+
+    return result;
+  }
+
+
+  public async productStatsEditor(input: StatisticModifier): Promise<Product> {
+    const { _id, targetKey, modifier } = input;
+    console.log('executed');
+    return await this.productModel.findByIdAndUpdate(
+      _id,
+      { $inc: { [targetKey]: modifier } },
+      { new: true, },
+    )
+    .exec();
+  }
+
 }

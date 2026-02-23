@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, InternalServerErrorException } from '@
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import { Member, Members } from '../../libs/dto/member/member';
-import { AgentsInquiry, LoginInput, MemberInput, MembersInquiry, TrainersInquiry } from '../../libs/dto/member/member.input';
+import { AgentsInquiry, LoginInput, MemberInput, MembersInquiry, SalesManagerInquiry, TrainersInquiry } from '../../libs/dto/member/member.input';
 import { MemberStatus, MemberType } from '../../libs/enums/member.enum';
 import { Direction, Message } from '../../libs/enums/common.enum';
 import { AuthService } from '../auth/auth.service';
@@ -154,12 +154,40 @@ export class MemberService {
     return result[0];
   }
 
+  // getTrainers method
   public async getTrainers(memberId: ObjectId, input: TrainersInquiry): Promise<Members> {
     const { text } = input.search;
     const match: T = { memberType: MemberType.TRAINER, memberStatus: MemberStatus.ACTIVE};
     const sort: T = { [input?.sort ?? 'createdAt']: input?.direction ?? Direction.DESC };
     if (text) match.memberNick = { $regex: new RegExp(text, 'i') };
     console.log('match:', match)
+
+    const result = await this.memberModel.aggregate([
+      {$match: match},
+      {$sort: sort},
+      {
+        $facet: {
+          list: [
+            { $skip: (input.page - 1) * input.limit }, 
+            { $limit: input.limit },
+            lookupAuthMemberLiked(memberId),
+          ],
+          metaCounter: [{ $count: "total" }],
+        }
+      }
+    ])
+    .exec();
+    if (!result.length) throw new InternalServerErrorException(Message.NO_DATA_FOUND); 
+
+    return result[0];
+  }
+
+  public async getSalesManagers(memberId: ObjectId, input: SalesManagerInquiry): Promise<Members> {
+    const { text } = input.search;
+    const match: T = { memberType: MemberType.SALESMANAGER, memberStatus: MemberStatus.ACTIVE};
+    const sort: T = { [input?.sort ?? 'createdAt']: input?.direction ?? Direction.DESC };
+    if (text) match.memberNick = { $regex: new RegExp(text, 'i') };
+    console.log('match:', match);
 
     const result = await this.memberModel.aggregate([
       {$match: match},

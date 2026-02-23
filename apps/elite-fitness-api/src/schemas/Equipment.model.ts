@@ -119,4 +119,4 @@ EquipmentSchema.index(
   { unique: true }
 );
 
-export const EquipmentModel = mongoose.model("Equipment", EquipmentSchema);
+export default EquipmentSchema;

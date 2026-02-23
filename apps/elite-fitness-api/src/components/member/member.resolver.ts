@@ -1,6 +1,6 @@
 import { Mutation, Resolver, Query, Args } from '@nestjs/graphql';
 import { MemberService } from './member.service';
-import { AgentsInquiry, LoginInput, MemberInput, MembersInquiry, TrainersInquiry } from '../../libs/dto/member/member.input';
+import { AgentsInquiry, LoginInput, MemberInput, MembersInquiry, SalesManagerInquiry, TrainersInquiry } from '../../libs/dto/member/member.input';
 import { Member, Members } from '../../libs/dto/member/member';
 import { BadRequestException, InternalServerErrorException, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../auth/guards/auth.guard';
@@ -83,6 +83,13 @@ export class MemberResolver {
   public async getTrainers(@Args('input') input: TrainersInquiry, @AuthMember('_id') memberId: ObjectId): Promise<Members> {
     console.log("Query: getTrainers");
     return await this.memberService.getTrainers(memberId, input);
+  }
+
+  @UseGuards(WithoutGuard)
+  @Query(() => Members)
+  public async getSalesManagers(@Args('input') input: SalesManagerInquiry, @AuthMember('_id') memberId: ObjectId): Promise<Members> {
+    console.log("Query: getSalesManagers");
+    return await this.memberService.getSalesManagers(memberId, input);
   }
 
   
