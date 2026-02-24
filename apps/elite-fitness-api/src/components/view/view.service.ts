@@ -12,14 +12,16 @@ import { Products } from '../../libs/dto/product/product';
 import { ProductOrdinaryInquiry } from '../../libs/dto/product/product.input';
 import { BasicInquiry } from '../../libs/dto/equipment/equipment.input';
 import { Equipments } from '../../libs/dto/equipment/equipment';
+import { ClotheOrdinaryInquiry } from '../../libs/dto/clothes/clothes.input';
+import { Clothes } from '../../libs/dto/clothes/clothes';
 
 @Injectable()
 export class ViewService {
   constructor(@InjectModel("View") private readonly viewModel: Model<View>) {}
   
   public async recordView(input: ViewInput): Promise<View | null> {
-    const viewEist = await this.checkViewExistance(input);
-    if(!viewEist) {
+    const viewExist = await this.checkViewExistance(input);
+    if(!viewExist) {
       console.log('- New View Insert -');
       return await this.viewModel.create(input);
     } else return null;
@@ -108,31 +110,31 @@ export class ViewService {
     return result;
   }
 
-  /* public async getVisitedClothes(
-    memberId: ObjectId, input: OrdinaryInquiry
-  ): Promise<Properties> {
+  public async getVisitedClothes(
+    memberId: ObjectId, input: ClotheOrdinaryInquiry
+  ): Promise<Clothes> {
     const {page, limit} = input;
-    const match: T = {viewGroup: ViewGroup.PROPERTY, memberId: memberId}
+    const match: T = {viewGroup: ViewGroup.CLOTHES, memberId: memberId}
 
     const data: T = await this.viewModel.aggregate([
       {$match: match},
       {$sort: { updatedAt: -1 }},
       {
         $lookup: {
-          from: 'properties',
+          from: 'clothes',
           localField: 'viewRefId',
           foreignField: '_id',
-          as: 'visitedProperty',
+          as: 'visitedClothe',
         }
       },
-      { $unwind: "$visitedProperty" },
+      { $unwind: "$visitedClothe" },
       {
         $facet: {
           list: [
             {$skip: (page-1)*limit},
             {$limit: limit},
             lookupVisited,
-            { $unwind: "$visitedProperty.memberData" },
+            { $unwind: "$visitedClothe.memberData" },
           ],
           metaCounter: [{ $count: "total" }],
         },
@@ -140,11 +142,11 @@ export class ViewService {
     ])
     .exec();
 
-    const result: Properties = {list: [], metaCounter: data[0].metaCounter};
-    result.list = data[0].list.map((ele) => ele.visitedProperty);
+    const result: Clothes = {list: [], metaCounter: data[0].metaCounter};
+    result.list = data[0].list.map((ele) => ele.visitedClothe);
     
     return result;
-  } */
+  } 
 
 
   public async getVisitedEquipments(
@@ -180,7 +182,7 @@ export class ViewService {
     .exec();
 
     const result: Equipments = {list: [], metaCounter: data[0].metaCounter};
-    result.list = data[0].list.map((ele) => ele.visitedProperty);
+    result.list = data[0].list.map((ele) => ele.visitedEquipment);
     
     return result;
   } 

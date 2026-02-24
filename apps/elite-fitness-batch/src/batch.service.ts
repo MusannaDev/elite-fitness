@@ -52,7 +52,7 @@ export class BatchService {
         memberType: MemberType.AGENT,
         memberStatus: MemberStatus.ACTIVE,
         memberRank: 0
-      },)
+      },).exec();
 
       const promisedList = agents.map(async(ele: Member) => {
       const { _id, memberProperties, memberLikes, memberArticles, memberViews } = ele;

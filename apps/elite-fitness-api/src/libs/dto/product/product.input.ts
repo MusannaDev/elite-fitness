@@ -95,7 +95,7 @@ export class ProductInput {
 // ============================================================
 
 @InputType()
-export class PricesRange {
+export class ProductPricesRange {
   @Field(() => Int)
   start: number;
 
@@ -104,7 +104,7 @@ export class PricesRange {
 }
 
 @InputType()
-export class PeriodsRange {
+export class ProductPeriodsRange {
   @Field(() => Date)
   start: Date;
 
@@ -113,7 +113,7 @@ export class PeriodsRange {
 }
 
 @InputType()
-class PISearch {
+class PRISearch {
   @IsOptional()
   @Field(() => String, { nullable: true })
   memberId?: ObjectId;
@@ -135,12 +135,12 @@ class PISearch {
   benefitsList?: ProductBenefits[];
 
   @IsOptional()
-  @Field(() => PricesRange, { nullable: true })
-  pricesRange?: PricesRange;
+  @Field(() => ProductPricesRange, { nullable: true })
+  pricesRange?: ProductPricesRange;
 
   @IsOptional()
-  @Field(() => PeriodsRange, { nullable: true })
-  periodsRange?: PeriodsRange;
+  @Field(() => ProductPeriodsRange, { nullable: true })
+  periodsRange?: ProductPeriodsRange;
 
   @IsOptional()
   @Field(() => String, { nullable: true })
@@ -169,8 +169,8 @@ export class ProductsInquiry {
   direction?: Direction;
 
   @IsNotEmpty()
-  @Field(() => PISearch)
-  search: PISearch;
+  @Field(() => PRISearch)
+  search: PRISearch;
 }
 
 // ============================================================
@@ -215,7 +215,7 @@ export class TrainerProductsInquiry {
 // ============================================================
 
 @InputType()
-class ALPISearch {
+class ALLPRISearch {
   @IsOptional()
   @Field(() => ProductStatus, { nullable: true })
   productStatus?: ProductStatus;
@@ -247,8 +247,8 @@ export class AllProductsInquiry {
   direction?: Direction;
 
   @IsNotEmpty()
-  @Field(() => ALPISearch)
-  search: ALPISearch;
+  @Field(() => ALLPRISearch)
+  search: ALLPRISearch;
 }
 
 // ============================================================

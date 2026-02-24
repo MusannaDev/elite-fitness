@@ -78,7 +78,7 @@ export class ProductService {
     const search: T = {
       _id: input._id,
       memberId: memberId,
-      propertyStatus: ProductStatus.ACTIVE,
+      productStatus: ProductStatus.ACTIVE,
     };
 
     if (productStatus === ProductStatus.SOLD) soldAt = moment().toDate();
@@ -151,7 +151,7 @@ export class ProductService {
     if (flavorList && flavorList.length) match.productFlavor = { $in: flavorList };
     if (benefitsList && benefitsList.length) match.productBenefits = { $in: benefitsList };
 
-    if (pricesRange) match.propertyPrice = { $gte: pricesRange.start, $lte: pricesRange.end };
+    if (pricesRange) match.productPrice = { $gte: pricesRange.start, $lte: pricesRange.end };
     if (periodsRange) match.createdAt = { $gte: periodsRange.start, $lte: periodsRange.end };
 
     if (text) match.productTitle = { $regex: new RegExp(text, 'i') };
@@ -208,7 +208,7 @@ export class ProductService {
 
   public async likeTargetProduct(memberId: ObjectId, likeRefId: ObjectId): Promise<Product> {
       const target: Product = await this.productModel
-        .findOne({ _id: likeRefId, propertyStatus: ProductStatus.ACTIVE })
+        .findOne({ _id: likeRefId, productStatus: ProductStatus.ACTIVE })
         .exec();
       if (!target) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
   
@@ -241,8 +241,8 @@ export class ProductService {
     const match: T = {};
     const sort: T = { [input?.sort ?? 'createdAt']: input?.direction ?? Direction.DESC };
 
-    if(productStatus) match.propertyStatus = productStatus;
-    if(categoryList) match.propertyLocation = { $in: categoryList };
+    if(productStatus) match.productStatus = productStatus;
+    if(categoryList) match.productCategory = { $in: categoryList };
 
     const result = await this.productModel
       .aggregate([
@@ -296,7 +296,7 @@ export class ProductService {
   }
 
   public async removeProductByAdmin(productId: ObjectId): Promise<Product> {
-    const search: T = { _id: productId, propertyStatus: ProductStatus.DELETE };
+    const search: T = { _id: productId, productStatus: ProductStatus.DELETE };
     const result = await this.productModel.findOneAndDelete(search).exec();
     if(!result) throw new InternalServerErrorException(Message.REMOVE_FAILED);
 

@@ -1,25 +1,25 @@
 import mongoose, { Schema } from "mongoose";
 import {
-  ClothesCategory,
-  ClothesColor,
-  ClothesGender,
-  ClothesMaterial,
-  ClothesSize,
-  ClothesStatus,
+  ClotheCategory,
+  ClotheColor,
+  ClotheGender,
+  ClotheMaterial,
+  ClotheSize,
+  ClotheStatus,
 } from "../libs/enums/clothes.enum";
 
 const ClothesSchema = new Schema(
   {
     clothesCategory: {
       type: String,
-      enum: ClothesCategory,
+      enum: ClotheCategory,
       required: true,
     },
 
     clothesStatus: {
       type: String,
-      enum: ClothesStatus,
-      default: ClothesStatus.ACTIVE,
+      enum: ClotheStatus,
+      default: ClotheStatus.ACTIVE,
     },
 
     clothesName: {
@@ -39,25 +39,25 @@ const ClothesSchema = new Schema(
 
     clothesMaterial: {
       type: String,
-      enum: ClothesMaterial,
+      enum: ClotheMaterial,
       required: true,
     },
 
     clothesSize: {
       type: String,
-      enum: ClothesSize,
+      enum: ClotheSize,
       required: true,
     },
 
     clothesGender: {
       type: String,
-      enum: ClothesGender,
+      enum: ClotheGender,
       required: true,
     },
 
     clothesColor: {
       type: String,
-      enum: ClothesColor,
+      enum: ClotheColor,
       required: true,
     },
 

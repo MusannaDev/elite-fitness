@@ -152,7 +152,7 @@ export class EquipmentService {
       if (materialList && materialList.length) match.equipmentMaterial = { $in: materialList };
       if (weightCapacityList && weightCapacityList.length) match.equipmentWeightCapacity = { $in: weightCapacityList };
   
-      if (pricesRange) match.propertyPrice = { $gte: pricesRange.start, $lte: pricesRange.end };
+      if (pricesRange) match.equipmentPrice = { $gte: pricesRange.start, $lte: pricesRange.end };
       if (periodsRange) match.createdAt = { $gte: periodsRange.start, $lte: periodsRange.end };
   
       if (text) match.equipmentTitle = { $regex: new RegExp(text, 'i') };
@@ -180,7 +180,7 @@ export class EquipmentService {
   
       const match: T = {
         memberId: memberId,
-        propertyStatus: equipmentStatus ?? { $ne: EquipmentStatus.DELETE },
+        equipmentStatus: equipmentStatus ?? { $ne: EquipmentStatus.DELETE },
       };
       const sort: T = { [input?.sort ?? 'createdAt']: input?.direction ?? Direction.DESC };
   
@@ -242,7 +242,7 @@ export class EquipmentService {
       const match: T = {};
       const sort: T = { [input?.sort ?? 'createdAt']: input?.direction ?? Direction.DESC };
   
-      if(equipmentStatus) match.propertyStatus = equipmentStatus;
+      if(equipmentStatus) match.equipmentStatus = equipmentStatus;
       if(categoryList) match.equipmentCategory = { $in: categoryList };
   
       const result = await this.equipmentModel
@@ -288,7 +288,7 @@ export class EquipmentService {
       if (soldAt || deletedAt) {
         await this.memberService.memberStatsEditor({
           _id: result.memberId,
-          targetKey: 'memberProperties',
+          targetKey: 'memberEquipments',
           modifier: -1,
         });
       }

@@ -1,71 +1,71 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import type { ObjectId } from "mongoose";
 import {
-  ClothesCategory,
-  ClothesColor,
-  ClothesGender,
-  ClothesMaterial,
-  ClothesSize,
-  ClothesStatus,
+  ClotheCategory,     // ← enum nomlarini o'zgartirmayapman, agar kerak bo'lsa alohida ayting
+  ClotheColor,
+  ClotheGender,
+  ClotheMaterial,
+  ClotheSize,
+  ClotheStatus,
 } from "../../enums/clothes.enum";
 import { Member, TotalCounter } from "../member/member";
 import { MeLiked } from "../like/like";
 
 @ObjectType()
-export class Clothes {
+export class Clothe {
   @Field(() => String)
   _id: ObjectId;
 
-  @Field(() => ClothesCategory)
-  clothesCategory: ClothesCategory;
+  @Field(() => ClotheCategory)
+  clotheCategory: ClotheCategory;
 
-  @Field(() => ClothesStatus)
-  clothesStatus: ClothesStatus;
-
-  @Field(() => String)
-  clothesName: string;
+  @Field(() => ClotheStatus)
+  clotheStatus: ClotheStatus;
 
   @Field(() => String)
-  clothesBrand: string;
+  clotheName: string;
+
+  @Field(() => String)
+  clotheBrand: string;
 
   @Field(() => Number)
-  clothesPrice: number;
+  clothePrice: number;
 
-  @Field(() => ClothesMaterial)
-  clothesMaterial: ClothesMaterial;
+  @Field(() => ClotheMaterial)
+  clotheMaterial: ClotheMaterial;
 
-  @Field(() => ClothesSize)
-  clothesSize: ClothesSize;
+  @Field(() => ClotheSize)
+  clotheSize: ClotheSize;
 
-  @Field(() => ClothesGender)
-  clothesGender: ClothesGender;
+  @Field(() => ClotheGender)
+  clotheGender: ClotheGender;
 
-  @Field(() => ClothesColor)
-  clothesColor: ClothesColor;
+  @Field(() => ClotheColor)
+  clotheColor: ClotheColor;
 
   @Field(() => Int)
-  clothesLeftCount: number;
+  clotheLeftCount: number;
 
   @Field(() => [String])
-  clothesImages: string[];
+  clotheImages: string[];
 
   @Field(() => String, { nullable: true })
-  clothesDesc?: string;
+  clotheDesc?: string;
 
   @Field(() => Boolean)
   isBestseller: boolean;
 
   @Field(() => Int)
-  clothesViews: number;
+  clotheViews: number;
 
   @Field(() => Int)
-  clothesLikes: number;
+  clotheLikes: number;
 
   @Field(() => Int)
-  clothesComments: number;
+  clotheComments: number;
 
   @Field(() => Int)
-  clothesRank: number;
+  clotheRank: number;
 
   @Field(() => String)
   memberId: ObjectId;
@@ -91,9 +91,9 @@ export class Clothes {
 }
 
 @ObjectType()
-export class ClothesList {
-  @Field(() => [Clothes])
-  list: Clothes[];
+export class Clothes {
+  @Field(() => [Clothe])
+  list: Clothe[];
 
   @Field(() => [TotalCounter], { nullable: true })
   metaCounter: TotalCounter[];

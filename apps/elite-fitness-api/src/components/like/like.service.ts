@@ -1,10 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Model, ObjectId } from 'mongoose';
 import { Like, MeLiked } from '../../libs/dto/like/like';
-import { MemberService } from '../member/member.service';
-import { ViewService } from '../view/view.service';
-import { BoardArticleService } from '../board-article/board-article.service';
-import { PropertyService } from '../property/property.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { LikeInput } from '../../libs/dto/like/like.input';
 import { T } from '../../libs/types/common';
@@ -13,10 +9,12 @@ import { OrdinaryInquiry } from '../../libs/dto/property/property.input';
 import { Properties } from '../../libs/dto/property/property';
 import { LikeGroup } from '../../libs/enums/like.enum';
 import { lookupFavorite } from '../../libs/config';
-import { Product, Products } from '../../libs/dto/product/product';
-import { Equipment, Equipments } from '../../libs/dto/equipment/equipment';
+import { Products } from '../../libs/dto/product/product';
+import { Equipments } from '../../libs/dto/equipment/equipment';
 import { BasicInquiry } from '../../libs/dto/equipment/equipment.input'
 import { ProductOrdinaryInquiry } from '../../libs/dto/product/product.input';
+import { ClotheOrdinaryInquiry } from '../../libs/dto/clothes/clothes.input';
+import { Clothes } from '../../libs/dto/clothes/clothes';
 
 @Injectable()
 export class LikeService {
@@ -124,7 +122,7 @@ export class LikeService {
     .exec();
 
     const result: Products = {list: [], metaCounter: data[0].metaCounter};
-    result.list = data[0].list.map((ele) => ele.favoriteProperty);
+    result.list = data[0].list.map((ele) => ele.favoriteProduct);
     
     return result;
   }
@@ -163,7 +161,45 @@ export class LikeService {
     .exec();
 
     const result: Equipments = {list: [], metaCounter: data[0].metaCounter};
-    result.list = data[0].list.map((ele) => ele.favoriteProperty);
+    result.list = data[0].list.map((ele) => ele.favoriteEquipment);
+    
+    return result;
+  }
+
+  public async getFavoriteClothes(
+    memberId: ObjectId, input: ClotheOrdinaryInquiry
+  ): Promise<Clothes> {
+    const {page, limit} = input;
+    const match: T = {likeGroup: LikeGroup.CLOTHES, memberId: memberId}
+
+    const data: T = await this.likeModel.aggregate([
+      {$match: match},
+      {$sort: { updatedAt: -1 }},
+      {
+        $lookup: {
+          from: 'clothes',
+          localField: 'likeRefId',
+          foreignField: '_id',
+          as: 'favoriteClothe',
+        }
+      },
+      { $unwind: "$favoriteClothe" },
+      {
+        $facet: {
+          list: [
+            {$skip: (page-1)*limit},
+            {$limit: limit},
+            lookupFavorite,
+            { $unwind: "$favoriteClothe.memberData" },
+          ],
+          metaCounter: [{ $count: "total" }],
+        },
+      },
+    ])
+    .exec();
+
+    const result: Clothes = {list: [], metaCounter: data[0].metaCounter};
+    result.list = data[0].list.map((ele) => ele.favoriteClothe);
     
     return result;
   }

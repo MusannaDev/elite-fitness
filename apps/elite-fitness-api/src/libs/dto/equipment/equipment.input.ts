@@ -78,7 +78,7 @@ export class EquipmentInput {
 // ============================================================
 
 @InputType()
-export class PricesRange {
+export class EquipmentPricesRange {
   @Field(() => Int)
   start: number;
 
@@ -87,7 +87,7 @@ export class PricesRange {
 }
 
 @InputType()
-export class PeriodsRange {
+export class EquipmentPeriodsRange {
   @Field(() => Date)
   start: Date;
 
@@ -118,12 +118,12 @@ class EISearch {
   weightCapacityList?: EquipmentWeightCapacity[];
 
   @IsOptional()
-  @Field(() => PricesRange, { nullable: true })
-  pricesRange?: PricesRange;
+  @Field(() => EquipmentPricesRange, { nullable: true })
+  pricesRange?: EquipmentPricesRange;
 
   @IsOptional()
-  @Field(() => PeriodsRange, { nullable: true })
-  periodsRange?: PeriodsRange;
+  @Field(() => EquipmentPeriodsRange, { nullable: true })
+  periodsRange?: EquipmentPeriodsRange;
 
   @IsOptional()
   @Field(() => String, { nullable: true })
@@ -198,7 +198,7 @@ export class SalesManagerEquipmentsInquiry {
 // ============================================================
 
 @InputType()
-class ALEISearch {
+class ALLEISearch {
   @IsOptional()
   @Field(() => EquipmentStatus, { nullable: true })
   equipmentStatus?: EquipmentStatus;
@@ -230,8 +230,8 @@ export class AllEquipmentsInquiry {
   direction?: Direction;
 
   @IsNotEmpty()
-  @Field(() => ALEISearch)
-  search: ALEISearch;
+  @Field(() => ALLEISearch)
+  search: ALLEISearch;
 }
 
 // ============================================================

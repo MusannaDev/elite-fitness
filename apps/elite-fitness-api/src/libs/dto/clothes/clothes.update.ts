@@ -1,79 +1,79 @@
 import { Field, InputType, Int } from "@nestjs/graphql";
 import { IsInt, IsNotEmpty, IsOptional, Length, Min } from "class-validator";
 import {
-  ClothesCategory,
-  ClothesColor,
-  ClothesGender,
-  ClothesMaterial,
-  ClothesSize,
-  ClothesStatus,
+  ClotheCategory,
+  ClotheColor,
+  ClotheGender,
+  ClotheMaterial,
+  ClotheSize,
+  ClotheStatus,
 } from "../../enums/clothes.enum";
 import type { ObjectId } from "mongoose";
 
 @InputType()
-export class ClothesUpdate {
+export class ClotheUpdate {
   @IsNotEmpty()
   @Field(() => String)
   _id: ObjectId;
 
   @IsOptional()
-  @Field(() => ClothesCategory, { nullable: true })
-  clothesCategory?: ClothesCategory;
+  @Field(() => ClotheCategory, { nullable: true })
+  clotheCategory?: ClotheCategory;
 
   @IsOptional()
-  @Field(() => ClothesStatus, { nullable: true })
-  clothesStatus?: ClothesStatus;
+  @Field(() => ClotheStatus, { nullable: true })
+  clotheStatus?: ClotheStatus;
 
   @IsOptional()
   @Length(3, 100)
   @Field(() => String, { nullable: true })
-  clothesName?: string;
+  clotheName?: string;
 
   @IsOptional()
   @Length(2, 100)
   @Field(() => String, { nullable: true })
-  clothesBrand?: string;
+  clotheBrand?: string;
 
   @IsOptional()
   @Field(() => Number, { nullable: true })
-  clothesPrice?: number;
+  clothePrice?: number;
 
   @IsOptional()
-  @Field(() => ClothesMaterial, { nullable: true })
-  clothesMaterial?: ClothesMaterial;
+  @Field(() => ClotheMaterial, { nullable: true })
+  clotheMaterial?: ClotheMaterial;
 
   @IsOptional()
-  @Field(() => ClothesSize, { nullable: true })
-  clothesSize?: ClothesSize;
+  @Field(() => ClotheSize, { nullable: true })
+  clotheSize?: ClotheSize;
 
   @IsOptional()
-  @Field(() => ClothesGender, { nullable: true })
-  clothesGender?: ClothesGender;
+  @Field(() => ClotheGender, { nullable: true })
+  clotheGender?: ClotheGender;
 
   @IsOptional()
-  @Field(() => ClothesColor, { nullable: true })
-  clothesColor?: ClothesColor;
+  @Field(() => ClotheColor, { nullable: true })
+  clotheColor?: ClotheColor;
 
   @IsOptional()
   @IsInt()
   @Min(0)
   @Field(() => Int, { nullable: true })
-  clothesLeftCount?: number;
+  clotheLeftCount?: number;
 
   @IsOptional()
   @Field(() => [String], { nullable: true })
-  clothesImages?: string[];
+  clotheImages?: string[];
 
   @IsOptional()
   @Length(5, 500)
   @Field(() => String, { nullable: true })
-  clothesDesc?: string;
+  clotheDesc?: string;
 
   @IsOptional()
   @Field(() => Boolean, { nullable: true })
   isBestseller?: boolean;
 
-  soldAt?: Date;
+  soldAt?: Date;  
   
   deletedAt?: Date;
 }

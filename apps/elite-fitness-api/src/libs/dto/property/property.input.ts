@@ -73,7 +73,7 @@ export class PropertyInput {
 
 
 @InputType()
-export class PricesRange {
+export class PropertyPricesRange {
   @Field(() => Int)
   start: number;
 
@@ -82,7 +82,7 @@ export class PricesRange {
 }
 
 @InputType()
-export class SquaresRange {
+export class PropertySquaresRange {
   @Field(() => Int)
   start: number;
 
@@ -92,7 +92,7 @@ export class SquaresRange {
 
 
 @InputType()
-export class PeriodsRange {
+export class PropertyPeriodsRange {
   @Field(() => Date)
   start: number;
 
@@ -128,16 +128,16 @@ class PISearch {
   options?: string[];
 
   @IsOptional()
-  @Field(() => PricesRange, { nullable: true })
-  pricesRange?: PricesRange;
+  @Field(() => PropertyPricesRange, { nullable: true })
+  pricesRange?: PropertyPricesRange;
 
   @IsOptional()
-  @Field(() => PeriodsRange, { nullable: true })
-  periodsRange?: PeriodsRange;
+  @Field(() => PropertyPeriodsRange, { nullable: true })
+  periodsRange?: PropertyPeriodsRange;
 
   @IsOptional()
-  @Field(() => SquaresRange, { nullable: true })
-  squaresRange?: SquaresRange;
+  @Field(() => PropertySquaresRange, { nullable: true })
+  squaresRange?: PropertySquaresRange;
 
   @IsOptional()
   @Field(() => String, { nullable: true })

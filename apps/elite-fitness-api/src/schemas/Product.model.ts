@@ -11,7 +11,7 @@ const ProductSchema = new Schema(
   {
     productCategory: {
       type: String,
-      enum: ProductCategory,
+      enum: Object.values(ProductCategory),
       required: true,
     },
 
@@ -48,7 +48,8 @@ const ProductSchema = new Schema(
     },
 
     productBenefits: {
-      enum: ProductBenefits,
+      type: [String],
+      enum: Object.values(ProductBenefits),
       required: true,
     },
 

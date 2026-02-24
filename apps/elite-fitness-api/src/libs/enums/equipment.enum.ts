@@ -1,14 +1,22 @@
+import { registerEnumType } from '@nestjs/graphql';
+
 export enum EquipmentCategory {
-  FREE_WEIGHTS = "FREE_WEIGHTS",     // Gantellar, shtangalar, disklar
-  MACHINES = "MACHINES",             // Trenajorlar, simulyatorlar
-  ACCESSORIES = "ACCESSORIES",       // Rezinkalar, to'plar, kamar, ip...
+  FREE_WEIGHTS = "FREE_WEIGHTS",
+  MACHINES = "MACHINES",
+  ACCESSORIES = "ACCESSORIES",
 }
+registerEnumType(EquipmentCategory, {
+  name: 'EquipmentCategory',
+});
 
 export enum EquipmentStatus {
   ACTIVE = "ACTIVE",
   SOLD = "SOLD",
   DELETE = "DELETE",
 }
+registerEnumType(EquipmentStatus, {
+  name: 'EquipmentStatus',
+});
 
 export enum EquipmentMaterial {
   STEEL = "STEEL",
@@ -18,6 +26,9 @@ export enum EquipmentMaterial {
   ALUMINUM = "ALUMINUM",
   PLASTIC = "PLASTIC",
 }
+registerEnumType(EquipmentMaterial, {
+  name: 'EquipmentMaterial',
+});
 
 export enum EquipmentWeightCapacity {
   KG_50 = "50KG",
@@ -28,9 +39,15 @@ export enum EquipmentWeightCapacity {
   KG_300 = "300KG",
   KG_500 = "500KG",
 }
+registerEnumType(EquipmentWeightCapacity, {
+  name: 'EquipmentWeightCapacity',
+});
 
 export enum EquipmentLocation {
   INDOOR = "INDOOR",
   OUTDOOR = "OUTDOOR",
   BOTH = "BOTH",
 }
+registerEnumType(EquipmentLocation, {
+  name: 'EquipmentLocation',
+});

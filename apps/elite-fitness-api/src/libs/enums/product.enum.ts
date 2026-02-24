@@ -1,3 +1,5 @@
+import { registerEnumType } from '@nestjs/graphql';
+
 export enum ProductCategory {
   PROTEIN = "PROTEIN",
   CREATINE = "CREATINE",
@@ -9,12 +11,18 @@ export enum ProductCategory {
   OMEGA = "OMEGA",
   OTHERS = "OTHERS"
 }
+registerEnumType(ProductCategory, {
+  name: 'ProductCategory',
+});
 
 export enum ProductStatus {
   ACTIVE = "ACTIVE",
   SOLD = "SOLD",
   DELETE = "DELETE",
 }
+registerEnumType(ProductStatus, {
+  name: 'ProductStatus',
+});
 
 export enum ProductFlavor {
   CHOCOLATE = "CHOCOLATE",
@@ -24,25 +32,34 @@ export enum ProductFlavor {
   BANANA = "BANANA",
   OTHER = "OTHER"
 }
+registerEnumType(ProductFlavor, {
+  name: 'ProductFlavor',
+});
 
 export enum ProductWeight {
   QUARTER_KG = "250G",
-  HALF_KG = "500G",       // 500g
-  ONE_KG = "1KG",           // 1 kg
-  TWO_KG = "2KG",           // 2 kg
-  TWO_HALF_KG = "2.5KG",       // 2.5 kg
-  THREE_KG = "3KG",           // 3 kg
-  FIVE_KG = "5KG",           // 5 kg         
+  HALF_KG = "500G",
+  ONE_KG = "1KG",
+  TWO_KG = "2KG",
+  TWO_HALF_KG = "2.5KG",
+  THREE_KG = "3KG",
+  FIVE_KG = "5KG",
 }
+registerEnumType(ProductWeight, {
+  name: 'ProductWeight',
+});
 
 export enum ProductBenefits {
-  MUSCLE_GROWTH = "MUSCLE_GROWTH",         // Mushak o'sishi
-  WEIGHT_LOSS = "WEIGHT_LOSS",             // Vazn yo'qotish
-  ENERGY_BOOST = "ENERGY_BOOST",           // Energiya berish
-  RECOVERY = "RECOVERY",                   // Tiklash
-  ENDURANCE = "ENDURANCE",                 // Chidamlilik
-  IMMUNE_SUPPORT = "IMMUNE_SUPPORT",       // Immunitet
-  JOINT_HEALTH = "JOINT_HEALTH",           // Bo'g'im sog'lig'i
-  FAT_BURNING = "FAT_BURNING",             // Yog' yoqish
-  HYDRATION = "HYDRATION",                 // Suv balansi
+  MUSCLE_GROWTH = "MUSCLE_GROWTH",
+  WEIGHT_LOSS = "WEIGHT_LOSS",
+  ENERGY_BOOST = "ENERGY_BOOST",
+  RECOVERY = "RECOVERY",
+  ENDURANCE = "ENDURANCE",
+  IMMUNE_SUPPORT = "IMMUNE_SUPPORT",
+  JOINT_HEALTH = "JOINT_HEALTH",
+  FAT_BURNING = "FAT_BURNING",
+  HYDRATION = "HYDRATION",
 }
+registerEnumType(ProductBenefits, {
+  name: 'ProductBenefits',
+});

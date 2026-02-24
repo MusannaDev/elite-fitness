@@ -1,4 +1,6 @@
-export enum ClothesCategory {
+import { registerEnumType } from '@nestjs/graphql';
+
+export enum ClotheCategory {
   T_SHIRT = "T_SHIRT",
   HOODIE = "HOODIE",
   SHORTS = "SHORTS",
@@ -9,14 +11,20 @@ export enum ClothesCategory {
   JACKET = "JACKET",
   SPORTS_BRA = "SPORTS_BRA",
 }
+registerEnumType(ClotheCategory, {
+  name: 'ClotheCategory',
+});
 
-export enum ClothesStatus {
+export enum ClotheStatus {
   ACTIVE = "ACTIVE",
   SOLD = "SOLD",
   DELETE = "DELETE",
 }
+registerEnumType(ClotheStatus, {
+  name: 'ClotheStatus',
+});
 
-export enum ClothesMaterial {
+export enum ClotheMaterial {
   COTTON = "COTTON",
   POLYESTER = "POLYESTER",
   NYLON = "NYLON",
@@ -24,8 +32,11 @@ export enum ClothesMaterial {
   FLEECE = "FLEECE",
   MESH = "MESH",
 }
+registerEnumType(ClotheMaterial, {
+  name: 'ClotheMaterial',
+});
 
-export enum ClothesSize {
+export enum ClotheSize {
   XS = "XS",
   S = "S",
   M = "M",
@@ -33,14 +44,20 @@ export enum ClothesSize {
   XL = "XL",
   XXL = "XXL",
 }
+registerEnumType(ClotheSize, {
+  name: 'ClotheSize',
+});
 
-export enum ClothesGender {
+export enum ClotheGender {
   MEN = "MEN",
   WOMEN = "WOMEN",
   UNISEX = "UNISEX",
 }
+registerEnumType(ClotheGender, {
+  name: 'ClotheGender',
+});
 
-export enum ClothesColor {
+export enum ClotheColor {
   BLACK = "BLACK",
   WHITE = "WHITE",
   GRAY = "GRAY",
@@ -51,3 +68,6 @@ export enum ClothesColor {
   NAVY = "NAVY",
   PINK = "PINK",
 }
+registerEnumType(ClotheColor, {
+  name: 'ClotheColor',
+});
