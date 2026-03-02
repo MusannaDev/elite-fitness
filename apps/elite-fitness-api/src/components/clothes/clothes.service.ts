@@ -243,8 +243,8 @@ export class ClothesService {
     const match: T = {};
     const sort: T = { [input?.sort ?? 'createdAt']: input?.direction ?? Direction.DESC };
 
-    if(clotheStatus) match.propertyStatus = clotheStatus;
-    if(categoryList) match.categoryList = { $in: categoryList };
+    if(clotheStatus) match.clotheStatus = clotheStatus;
+    if(categoryList) match.clotheCategory = { $in: categoryList };
 
     const result = await this.clothesModel
       .aggregate([
