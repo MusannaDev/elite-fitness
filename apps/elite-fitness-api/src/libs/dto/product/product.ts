@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from "@nestjs/graphql";
+import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import type { ObjectId } from "mongoose";
 import {
   ProductBenefits,
@@ -45,8 +45,8 @@ export class Product {
   @Field(() => Int)
   productCalories: number;
 
-  @Field(() => Number)
-  productProteinPerServing: number;
+  @Field(() => Float, { nullable: true })
+  productProteinPerServing?: number;
 
   @Field(() => String, { nullable: true })
   productDesc?: string;

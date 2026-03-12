@@ -5,6 +5,8 @@ import { T } from "./types/common";
 
 
 export const availableAgentSorts = ["createdAt", "updatedAt", "memberLikes", "memberViews", "memberRank"];
+export const availableTrainerSorts = ["createdAt", "updatedAt", "memberLikes", "memberViews", "memberRank"];
+export const availableSalesManagerSorts = ["createdAt", "updatedAt", "memberLikes", "memberViews", "memberRank"];
 export const availableMemberSorts = ["createdAt", "updatedAt", "memberLikes", "memberViews"];
 export const availableOptions = ['propertyBarter', 'propertyRent'];
 export const availablePropertySorts = [
@@ -21,7 +23,7 @@ export const availableCommentSorts = ["createdAt", "updatedAt",];
 export const availableProductSorts = ["productPrice", "productViews", "productLikes", "productRank", "createdAt"];
 export const availableEquipmentSorts = ["equipmentPrice", "equipmentViews", "equipmentLikes", "equipmentRank", "createdAt"];
 
-export const availableClothesSorts = ["clothesPrice", "clothesViews", "clothesLikes", "clothesRank", "createdAt"];
+export const availableClothesSorts = ["clothePrice", "clotheViews", "clotheLikes", "clotheRank", "createdAt"];
 
 // IMAGE CONFIGURATION 
 

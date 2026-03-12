@@ -66,22 +66,22 @@ export class EquipmentResolver {
 
   @UseGuards(AuthGuard)
   @Query((returns) => Equipments)
-  public async getFavorites(
+  public async getLikedEquipments(
     @Args('input') input: BasicInquiry,
     @AuthMember('_id') memberId: ObjectId,
   ): Promise<Equipments> {
-    console.log('Query: getFavorites');
-    return await this.equipmentService.getFavorites(memberId, input);
+    console.log('Query: getLikedEquipments');
+    return await this.equipmentService.getLikedEquipments(memberId, input);
   }
 
   @UseGuards(AuthGuard)
   @Query((returns) => Equipments)
-  public async getVisited(
+  public async getSeenEquipments(
     @Args('input') input: BasicInquiry,
     @AuthMember('_id') memberId: ObjectId,
   ): Promise<Equipments> {
     console.log('Query: getVisited');
-    return await this.equipmentService.getVisited(memberId, input);
+    return await this.equipmentService.getSeenEquipments(memberId, input);
   }
 
   @Roles(MemberType.SALESMANAGER)

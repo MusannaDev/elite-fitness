@@ -1,4 +1,4 @@
-import { Field, InputType, Int } from "@nestjs/graphql";
+import { Field, Float, InputType, Int } from "@nestjs/graphql";
 import {
   IsBoolean,
   IsInt,
@@ -71,7 +71,7 @@ export class ProductUpdate {
 
   @IsOptional()
   @IsNumber()
-  @Field(() => Number, { nullable: true })
+  @Field(() => Float, { nullable: true })
   productProteinPerServing?: number;
 
   @IsOptional()

@@ -161,13 +161,13 @@ export class ClothesService {
   }
 
 
-  public async getFavorites(
+  public async getFavoriteClothes(
     memberId: ObjectId, input: ClotheOrdinaryInquiry
   ): Promise<Clothes> {
     return await this.likeService.getFavoriteClothes(memberId, input);
   }
 
-  public async getVisited(
+  public async getVisitedClothes(
     memberId: ObjectId, input: ClotheOrdinaryInquiry
   ): Promise<Clothes> {
     return await this.viewService.getVisitedClothes(memberId, input);

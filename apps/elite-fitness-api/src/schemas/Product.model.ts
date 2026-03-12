@@ -48,8 +48,8 @@ const ProductSchema = new Schema(
     },
 
     productBenefits: {
-      type: [String],
-      enum: Object.values(ProductBenefits),
+      type: String,
+      enum: ProductBenefits,
       required: true,
     },
 
@@ -120,7 +120,6 @@ const ProductSchema = new Schema(
   { timestamps: true }
 );
 
-ProductSchema.index({productName: 1, productBrand: 1, productWeight: 1, productFlavor: 1,      
-  }, { unique: true });
+ProductSchema.index({productName: 1, productBrand: 1}, { unique: true });
 
 export default ProductSchema;

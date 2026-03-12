@@ -10,68 +10,68 @@ import {
 
 const ClothesSchema = new Schema(
   {
-    clothesCategory: {
+    clotheCategory: {
       type: String,
       enum: ClotheCategory,
       required: true,
     },
 
-    clothesStatus: {
+    clotheStatus: {
       type: String,
       enum: ClotheStatus,
       default: ClotheStatus.ACTIVE,
     },
 
-    clothesName: {
+    clotheName: {
       type: String,
       required: true,
     },
 
-    clothesBrand: {
+    clotheBrand: {
       type: String,
       required: true,
     },
 
-    clothesPrice: {
+    clothePrice: {
       type: Number,
       required: true,
     },
 
-    clothesMaterial: {
+    clotheMaterial: {
       type: String,
       enum: ClotheMaterial,
       required: true,
     },
 
-    clothesSize: {
+    clotheSize: {
       type: String,
       enum: ClotheSize,
       required: true,
     },
 
-    clothesGender: {
+    clotheGender: {
       type: String,
       enum: ClotheGender,
       required: true,
     },
 
-    clothesColor: {
+    clotheColor: {
       type: String,
       enum: ClotheColor,
       required: true,
     },
 
-    clothesLeftCount: {
+    clotheLeftCount: {
       type: Number,
       required: true,
     },
 
-    clothesImages: {
+    clotheImages: {
       type: [String],
       required: true,
     },
 
-    clothesDesc: {
+    clotheDesc: {
       type: String,
     },
 
@@ -80,22 +80,22 @@ const ClothesSchema = new Schema(
       default: false,
     },
 
-    clothesViews: {
+    clotheViews: {
       type: Number,
       default: 0,
     },
 
-    clothesLikes: {
+    clotheLikes: {
       type: Number,
       default: 0,
     },
 
-    clothesComments: {
+    clotheComments: {
       type: Number,
       default: 0,
     },
 
-    clothesRank: {
+    clotheRank: {
       type: Number,
       default: 0,
     },
@@ -118,7 +118,7 @@ const ClothesSchema = new Schema(
 );
 
 ClothesSchema.index(
-  { clothesName: 1, clothesBrand: 1, clothesSize: 1, clothesColor: 1 },
+  { clotheName: 1, clotheBrand: 1, clotheSize: 1, clotheColor: 1 },
   { unique: true }
 );
 

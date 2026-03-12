@@ -24,7 +24,7 @@ export class ClothesResolver {
     @Args('input') input: ClotheInput,
     @AuthMember('_id') memberId: ObjectId,
   ): Promise<Clothe> {
-    console.log("Mutation: createProperty");
+    console.log("Mutation: createClothe");
     input.memberId = memberId;
     
     return await this.clothesService.createClothe(input);
@@ -66,22 +66,22 @@ export class ClothesResolver {
 
   @UseGuards(AuthGuard)
   @Query((returns) => Clothes)
-  public async getFavorites(
+  public async getFavoriteClothes(
     @Args('input') input: ClotheOrdinaryInquiry,
     @AuthMember('_id') memberId: ObjectId,
   ): Promise<Clothes> {
-    console.log('Query: getFavorites');
-    return await this.clothesService.getFavorites(memberId, input);
+    console.log('Query: getFavoriteClothes');
+    return await this.clothesService.getFavoriteClothes(memberId, input);
   }
 
   @UseGuards(AuthGuard)
   @Query((returns) => Clothes)
-  public async getVisited(
+  public async getVisitedClothes(
     @Args('input') input: ClotheOrdinaryInquiry,
     @AuthMember('_id') memberId: ObjectId,
   ): Promise<Clothes> {
-    console.log('Query: getVisited');
-    return await this.clothesService.getVisited(memberId, input);
+    console.log('Query: getVisitedClothes');
+    return await this.clothesService.getVisitedClothes(memberId, input);
   }
 
   @Roles(MemberType.SALESMANAGER)
@@ -98,7 +98,7 @@ export class ClothesResolver {
 
   @UseGuards(AuthGuard)
   @Mutation(() => Clothe)
-  public async likeTargetProperty
+  public async likeTargetClothe
   (@Args('clotheId') input: string, 
   @AuthMember('_id') memberId: ObjectId
   ): Promise<Clothe> {
@@ -134,7 +134,7 @@ export class ClothesResolver {
   @Roles(MemberType.ADMIN)
   @UseGuards(RolesGuard)
   @Mutation((returns) => Clothe)
-  public async removeClotheByAdmin(@Args('propertyId') input: string): Promise<Clothe> {
+  public async removeClotheByAdmin(@Args('clotheId') input: string): Promise<Clothe> {
     console.log('Mutation: removePropertyByAdmin');
     const clotheId = shapeIntoMongoObjectId(input);
     return await this.clothesService.removeClotheByAdmin(clotheId);

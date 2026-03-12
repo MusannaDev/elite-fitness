@@ -61,6 +61,21 @@ const MemberSchema = new Schema(
 			type: Number,
 			default: 0,
 		},
+		
+		memberProducts: {
+			type: Number,
+			default: 0,
+		},
+
+		memberClothes: {
+			type: Number,
+			default: 0,
+		},
+
+		memberEquipments: {
+			type: Number,
+			default: 0,
+		},
 
 		memberArticles: {
 			type: Number,

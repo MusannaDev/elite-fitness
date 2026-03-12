@@ -160,13 +160,13 @@ export class EquipmentService {
     }
   
   
-    public async getFavorites(
+    public async getLikedEquipments(
       memberId: ObjectId, input: BasicInquiry
     ): Promise<Equipments> {
       return await this.likeService.getFavoriteEquipments(memberId, input);
     }
   
-    public async getVisited(
+    public async getSeenEquipments(
       memberId: ObjectId, input: BasicInquiry
     ): Promise<Equipments> {
       return await this.viewService.getVisitedEquipments(memberId, input);

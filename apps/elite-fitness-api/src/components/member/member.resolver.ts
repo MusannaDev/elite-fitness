@@ -43,7 +43,7 @@ export class MemberResolver {
     return `Hi ${memberNick}`;
   }
 
-  @Roles(MemberType.USER, MemberType.AGENT)
+  @Roles(MemberType.USER, MemberType.AGENT, MemberType.SALESMANAGER, MemberType.TRAINER)
   @UseGuards(RolesGuard)
   @Query(() => String)
   public async checkAuthRoles(@AuthMember() authMember: Member): Promise<String> {
@@ -160,13 +160,13 @@ export class MemberResolver {
   @Mutation((returns) => [String])
   public async imagesUploader(
     @Args('files', { type: () => [GraphQLUpload] })
-  files: Promise<FileUpload>[],
-  @Args('target') target: String,
+    files: Promise<FileUpload>[],
+    @Args('target') target: String,
   ): Promise<string[]> {
     console.log('Mutation: imagesUploader');
 
     const uploadedImages = [];
-    const promisedList = files.map(async (img: Promise<FileUpload>, index: number): Promise<Promise<void>> => {
+    const promisedList = files.map(async (img: Promise<FileUpload>, index: number): Promise<void> => {
       try {
         const { filename, mimetype, encoding, createReadStream } = await img;
 
@@ -187,12 +187,12 @@ export class MemberResolver {
 
         uploadedImages[index] = url;
       } catch (err) {
-        console.log('Error, file missing!');
+        console.log('Error, file missing!', err.message);
       }
     });
 
     await Promise.all(promisedList);
-    return uploadedImages;
+    return uploadedImages.filter(Boolean);
   }
 
 }

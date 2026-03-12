@@ -1,9 +1,11 @@
 import { registerEnumType } from '@nestjs/graphql';
 
 export enum EquipmentCategory {
-  FREE_WEIGHTS = "FREE_WEIGHTS",
   MACHINES = "MACHINES",
+  STRENGTH = "STRENGTH",
   ACCESSORIES = "ACCESSORIES",
+  CARDIO = "CARDIO",
+  OTHER = "OTHER"
 }
 registerEnumType(EquipmentCategory, {
   name: 'EquipmentCategory',

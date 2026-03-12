@@ -159,13 +159,13 @@ export class ProductService {
   }
 
 
-  public async getFavorites(
+  public async getFavoriteProducts(
     memberId: ObjectId, input: ProductOrdinaryInquiry
   ): Promise<Products> {
     return await this.likeService.getFavoriteProducts(memberId, input);
   }
 
-  public async getVisited(
+  public async getVisitedProducts(
     memberId: ObjectId, input: ProductOrdinaryInquiry
   ): Promise<Products> {
     return await this.viewService.getVisitedProducts(memberId, input);
@@ -173,7 +173,7 @@ export class ProductService {
 
 
 
-  public async getTrainerProducts(memberId: ObjectId, input: TrainerProductsInquiry): Promise<Product> {
+  public async getTrainerProducts(memberId: ObjectId, input: TrainerProductsInquiry): Promise<Products> {
     const { productStatus } = input.search;
     if (productStatus === ProductStatus.DELETE) throw new BadRequestException(Message.NOT_ALLOWED_REQUEST);
 

@@ -66,40 +66,40 @@ export class ProductResolver {
 
   @UseGuards(AuthGuard)
   @Query((returns) => Products)
-  public async getFavorites(
+  public async getFavoriteProducts(
     @Args('input') input: ProductOrdinaryInquiry,
     @AuthMember('_id') memberId: ObjectId,
   ): Promise<Products> {
     console.log('Query: getFavorites');
-    return await this.productService.getFavorites(memberId, input);
+    return await this.productService.getFavoriteProducts(memberId, input);
   }
 
   @UseGuards(AuthGuard)
   @Query((returns) => Products)
-  public async getVisited(
+  public async getVisitedProducts(
     @Args('input') input: ProductOrdinaryInquiry,
     @AuthMember('_id') memberId: ObjectId,
   ): Promise<Products> {
     console.log('Query: getVisited');
-    return await this.productService.getVisited(memberId, input);
+    return await this.productService.getVisitedProducts(memberId, input);
   }
 
   @Roles(MemberType.TRAINER)
   @UseGuards(RolesGuard)
-  @Query((returns) => Product)
+  @Query((returns) => Products)
   public async getTrainerProducts(
     @Args('input') input: TrainerProductsInquiry,
     @AuthMember('_id') memberId: ObjectId,
-  ): Promise<Product> {
-    console.log('Query: getAgentProperties');
+  ): Promise<Products> {
+    console.log('Query: getTrainerProducts');
     return await this.productService.getTrainerProducts(memberId, input);
   }
 
 
   @UseGuards(AuthGuard)
   @Mutation(() => Product)
-  public async likeTargetProperty
-  (@Args('propertyId') input: string, 
+  public async likeTargetProduct
+  (@Args('productId') input: string, 
   @AuthMember('_id') memberId: ObjectId
   ): Promise<Product> {
     console.log("Mutation: likeTargetProduct");
@@ -134,7 +134,7 @@ export class ProductResolver {
   @Roles(MemberType.ADMIN)
   @UseGuards(RolesGuard)
   @Mutation((returns) => Product)
-  public async removeProductByAdmin(@Args('propertyId') input: string): Promise<Product> {
+  public async removeProductByAdmin(@Args('productId') input: string): Promise<Product> {
     console.log('Mutation: removeProductByAdmin');
     const productId = shapeIntoMongoObjectId(input);
     return await this.productService.removeProductByAdmin(productId);
