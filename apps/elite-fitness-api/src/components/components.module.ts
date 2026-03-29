@@ -10,20 +10,22 @@ import { ViewModule } from './view/view.module';
 import { ProductModule } from './product/product.module';
 import { ClothesModule } from './clothes/clothes.module';
 import { EquipmentModule } from './equipment/equipment.module';
+import { CsModule } from './cs/cs.module';
 
 @Module({
   imports: [
     MemberModule,
     AuthModule,
     PropertyModule,
-    BoardArticleModule,  
-    LikeModule, 
+    BoardArticleModule,
+    LikeModule,
     ViewModule,
     CommentModule,
     FollowModule,
     ProductModule,
     ClothesModule,
-    EquipmentModule,  
+    EquipmentModule,
+    CsModule,
   ]
 })
 export class ComponentsModule {}

@@ -37,13 +37,13 @@ registerEnumType(ProductFlavor, {
 });
 
 export enum ProductWeight {
-  QUARTER_KG = "250G",
-  HALF_KG = "500G",
-  ONE_KG = "1KG",
-  TWO_KG = "2KG",
-  TWO_HALF_KG = "2.5KG",
-  THREE_KG = "3KG",
-  FIVE_KG = "5KG",
+  QUARTER_KG = "QUARTER_KG",
+  HALF_KG = "HALF_KG",
+  ONE_KG = "ONE_KG",
+  TWO_KG = "TWO_KG",
+  TWO_HALF_KG = "TWO_HALF_KG",
+  THREE_KG = "THREE_KG",
+  FIVE_KG = "FIVE_KG",
 }
 registerEnumType(ProductWeight, {
   name: 'ProductWeight',

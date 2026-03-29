@@ -41,6 +41,7 @@ export class FollowService {
       });
     } catch (err) {
       console.log("Error, Service.model");
+      if (err.code === 11000) throw new BadRequestException(Message.ALREADY_SUBSCRIBED);
       throw new BadRequestException(Message.CREATE_FAILED)
     }
 

@@ -25,6 +25,10 @@ export const availableEquipmentSorts = ["equipmentPrice", "equipmentViews", "equ
 
 export const availableClothesSorts = ["clothePrice", "clotheViews", "clotheLikes", "clotheRank", "createdAt"];
 
+export const availableNoticeSorts = ['createdAt', 'updatedAt', 'noticeTitle'];
+
+export const availableInquirySorts = ['createdAt', 'updatedAt'];
+
 // IMAGE CONFIGURATION 
 
 

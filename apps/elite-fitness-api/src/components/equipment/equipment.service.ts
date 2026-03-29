@@ -32,7 +32,7 @@ export class EquipmentService {
         // increase properties +1
         await this.memberService.memberStatsEditor({
           _id: result.memberId,
-          targetKey: 'memberProperties',
+          targetKey: 'memberEquipments',
           modifier: 1,
         });
   
@@ -155,7 +155,7 @@ export class EquipmentService {
       if (pricesRange) match.equipmentPrice = { $gte: pricesRange.start, $lte: pricesRange.end };
       if (periodsRange) match.createdAt = { $gte: periodsRange.start, $lte: periodsRange.end };
   
-      if (text) match.equipmentTitle = { $regex: new RegExp(text, 'i') };
+      if (text) match.equipmentName = { $regex: new RegExp(text, 'i') };
     
     }
   

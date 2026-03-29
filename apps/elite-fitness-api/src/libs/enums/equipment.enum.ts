@@ -33,13 +33,13 @@ registerEnumType(EquipmentMaterial, {
 });
 
 export enum EquipmentWeightCapacity {
-  KG_50 = "50KG",
-  KG_100 = "100KG",
-  KG_150 = "150KG",
-  KG_200 = "200KG",
-  KG_250 = "250KG",
-  KG_300 = "300KG",
-  KG_500 = "500KG",
+  KG_50 = "KG_50",
+  KG_100 = "KG_100",
+  KG_150 = "KG_150",
+  KG_200 = "KG_200",
+  KG_250 = "KG_250",
+  KG_300 = "KG_300",
+  KG_500 = "KG_500",
 }
 registerEnumType(EquipmentWeightCapacity, {
   name: 'EquipmentWeightCapacity',
