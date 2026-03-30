@@ -1,0 +1,22 @@
+import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import OrderSchema from '../../schemas/Order.model';
+import OrderItemSchema from '../../schemas/OrderItem.model';
+import { OrderService } from './order.service';
+import { OrderResolver } from './order.resolver';
+import { AuthModule } from '../auth/auth.module';
+import { MemberModule } from '../member/member.module';
+
+@Module({
+  imports: [
+    MongooseModule.forFeature([
+      { name: 'Order', schema: OrderSchema },
+      { name: 'OrderItem', schema: OrderItemSchema },
+    ]),
+    AuthModule,
+    MemberModule,
+  ],
+  providers: [OrderResolver, OrderService],
+  exports: [OrderService, MongooseModule],
+})
+export class OrderModule {}

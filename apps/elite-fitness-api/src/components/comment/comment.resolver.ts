@@ -1,12 +1,12 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CommentService } from './comment.service';
-import { UseGuards } from '@nestjs/common';
+import { BadRequestException, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { CommentInput, CommentsInquiry } from '../../libs/dto/comment/comment.input';
 import { AuthMember } from '../auth/decorators/authMember.decorator';
 import type { ObjectId } from 'mongoose';
 import { CommentUpdate } from '../../libs/dto/comment/comment.update';
-import { shapeIntoMongoObjectId } from '../../libs/config';
+import { isValidMongoObjectId, shapeIntoMongoObjectId } from '../../libs/config';
 import { WithoutGuard } from '../auth/guards/without.guard';
 import { Comment, Comments } from '../../libs/dto/comment/comment';
 import { MemberType } from '../../libs/enums/member.enum';
@@ -48,6 +48,9 @@ export class CommentResolver {
     @AuthMember('_id') memberId: ObjectId,
   ): Promise<Comments> {
     console.log('Query: getComments');
+    if (!isValidMongoObjectId(input.search.commentRefId)) {
+      throw new BadRequestException('Invalid commentRefId');
+    }
     input.search.commentRefId = shapeIntoMongoObjectId(input.search.commentRefId);
     return await this.commentService.getComments(memberId, input);
   }  

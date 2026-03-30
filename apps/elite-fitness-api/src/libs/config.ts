@@ -38,8 +38,16 @@ export const getSerialForImage = (filename: string) => {
 	return uuidv4() + ext;
 };
 
+export const isValidMongoObjectId = (target: any): boolean => {
+  if (target == null) return false;
+  if (typeof target === "string") return ObjectId.isValid(target);
+  return ObjectId.isValid(target);
+}
+
 export const shapeIntoMongoObjectId = (target: any) => {
-  return typeof target === "string" ? new ObjectId(target) : target;
+  if (typeof target !== "string") return target;
+  if (!isValidMongoObjectId(target)) return target;
+  return new ObjectId(target);
 }
 
 export const lookupAuthMemberLiked = (memberId: T, targetRefId: string = '$_id') => {
