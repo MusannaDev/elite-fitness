@@ -66,8 +66,11 @@ export class OrderService {
     memberId: ObjectId,
     input: OrderInquiry,
   ): Promise<Order[]> {
-    const { page, limit, orderStatus } = input;
-    const match: T = { memberId, orderStatus };
+    const { page, limit, orderStatus, search } = input;
+    const resolvedStatus = search?.orderStatus ?? orderStatus;
+    const match: T = { memberId };
+
+    if (resolvedStatus) match.orderStatus = resolvedStatus;
 
     const result = await this.orderModel
       .aggregate([
@@ -121,10 +124,11 @@ export class OrderService {
   /** ADMIN **/
 
   public async getAllOrdersByAdmin(input: OrderInquiry): Promise<Order[]> {
-    const { page, limit, orderStatus } = input;
+    const { page, limit, orderStatus, search } = input;
+    const resolvedStatus = search?.orderStatus ?? orderStatus;
     const match: T = {};
 
-    if (orderStatus) match.orderStatus = orderStatus;
+    if (resolvedStatus) match.orderStatus = resolvedStatus;
 
     const result = await this.orderModel
       .aggregate([

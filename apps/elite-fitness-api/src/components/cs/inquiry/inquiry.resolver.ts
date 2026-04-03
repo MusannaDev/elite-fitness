@@ -18,7 +18,8 @@ export class InquiryResolver {
 
 	/* USER */
 
-	@UseGuards(AuthGuard)
+	@Roles(MemberType.ADMIN, MemberType.AGENT, MemberType.TRAINER, MemberType.SALESMANAGER)
+  @UseGuards(RolesGuard)
 	@Mutation(() => Inquiry)
 	public async createInquiry(
 		@Args('input') input: InquiryInput,
@@ -28,8 +29,8 @@ export class InquiryResolver {
 		return await this.inquiryService.createInquiry(memberId, input);
 	}
 
-	@UseGuards(AuthGuard)
-	@Mutation(() => Inquiry)
+	@Roles(MemberType.ADMIN, MemberType.AGENT, MemberType.TRAINER, MemberType.SALESMANAGER)
+  @UseGuards(RolesGuard)
 	public async updateInquiry(
 		@Args('input') input: InquiryUpdate,
 		@AuthMember('_id') memberId: ObjectId,
@@ -39,7 +40,8 @@ export class InquiryResolver {
 		return await this.inquiryService.updateInquiry(memberId, input);
 	}
 
-	@UseGuards(AuthGuard)
+	@Roles(MemberType.ADMIN)
+  @UseGuards(RolesGuard)
 	@Mutation(() => Inquiry)
 	public async deleteInquiry(
 		@Args('inquiryId') inquiryId: string,

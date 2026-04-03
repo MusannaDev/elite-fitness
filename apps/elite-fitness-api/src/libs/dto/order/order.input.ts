@@ -44,6 +44,14 @@ export class OrderInput {
 }
 
 @InputType()
+class OISearch {
+  @IsOptional()
+  @IsEnum(OrderStatus)
+  @Field(() => OrderStatus, { nullable: true })
+  orderStatus?: OrderStatus;
+}
+
+@InputType()
 export class OrderInquiry {
   @IsNotEmpty()
   @Min(1)
@@ -55,8 +63,12 @@ export class OrderInquiry {
   @Field(() => Int)
   limit: number;
 
-  @IsNotEmpty()
+  @IsOptional()
+  @Field(() => OISearch, { nullable: true })
+  search?: OISearch;
+
+  @IsOptional()
   @IsEnum(OrderStatus)
-  @Field(() => OrderStatus)
-  orderStatus: OrderStatus;
+  @Field(() => OrderStatus, { nullable: true })
+  orderStatus?: OrderStatus;
 }
