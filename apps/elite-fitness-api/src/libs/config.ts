@@ -20,10 +20,31 @@ export const availablePropertySorts = [
 export const availableBoardArticleSorts = ["createdAt", "updatedAt", "articleLikes", "articleViews"];
 export const availableCommentSorts = ["createdAt", "updatedAt",];
 
-export const availableProductSorts = ["productPrice", "productViews", "productLikes", "productRank", "createdAt"];
-export const availableEquipmentSorts = ["equipmentPrice", "equipmentViews", "equipmentLikes", "equipmentRank", "createdAt"];
+export const availableProductSorts = [
+	"productPrice",
+	"productViews",
+	"productLikes",
+	"productRank",
+	"createdAt",
+	"updatedAt",
+];
+export const availableEquipmentSorts = [
+	"equipmentPrice",
+	"equipmentViews",
+	"equipmentLikes",
+	"equipmentRank",
+	"createdAt",
+	"updatedAt",
+];
 
-export const availableClothesSorts = ["clothePrice", "clotheViews", "clotheLikes", "clotheRank", "createdAt"];
+export const availableClothesSorts = [
+	"clothePrice",
+	"clotheViews",
+	"clotheLikes",
+	"clotheRank",
+	"createdAt",
+	"updatedAt",
+];
 
 export const availableNoticeSorts = ['createdAt', 'updatedAt', 'noticeTitle'];
 

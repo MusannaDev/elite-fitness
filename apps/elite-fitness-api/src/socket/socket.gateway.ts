@@ -24,6 +24,8 @@ export class SocketGateway implements OnGatewayInit {
   private summaryClient: number = 0;
   private clientAuthMap = new Map<WebSocket, Member>();
   private messageList: MessagePayload[] = [];
+  private readonly MAX_MESSAGE_LENGTH = 500;
+  private readonly MAX_STORED_MESSAGES = 5;
 
   constructor(private authService: AuthService) {};  
 
@@ -79,22 +81,24 @@ export class SocketGateway implements OnGatewayInit {
       action: 'left'
     };
     this.emitMessage(infoMsg);
-
-    // client - disconnect
-    this.broadcastMessage(client, infoMsg);
   }
 
 
   @SubscribeMessage('message')
-  public async handleMessage(client: any, payload: string): Promise<void> {
+  public async handleMessage(client: any, payload: unknown): Promise<void> {
     const authMember = this.clientAuthMap.get(client);
-    const newMessage: MessagePayload = { event: "message", text: payload, memberData: authMember };
+    const normalizedText = this.normalizePayload(payload);
+    if (!normalizedText) return;
+
+    const newMessage: MessagePayload = { event: "message", text: normalizedText, memberData: authMember };
 
     const clientNick: string = authMember?.memberNick ?? "Guest";
-    this.logger.verbose(`NEW MESSAGE [${clientNick}]: ${payload}`);
+    this.logger.verbose(`NEW MESSAGE [${clientNick}]: ${normalizedText}`);
 
     this.messageList.push(newMessage);
-    if(this.messageList.length > 5) this.messageList.splice(0, this.messageList.length - 5);
+    if (this.messageList.length > this.MAX_STORED_MESSAGES) {
+      this.messageList.splice(0, this.messageList.length - this.MAX_STORED_MESSAGES);
+    }
 
     this.emitMessage(newMessage);
   }
@@ -107,22 +111,14 @@ export class SocketGateway implements OnGatewayInit {
     })
   }
 
-  private broadcastMessage(sender: WebSocket, message: InfoPayload | MessagePayload) {
-    this.server.clients.forEach((client) => {
-      if(client !== sender && client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify(message));
-      }
-    });
+  private normalizePayload(payload: unknown): string | null {
+    if (typeof payload !== 'string') return null;
+
+    const text = payload.trim();
+    if (!text) return null;
+
+    if (text.length <= this.MAX_MESSAGE_LENGTH) return text;
+    return text.slice(0, this.MAX_MESSAGE_LENGTH);
   }
 
 }
-
-
-/* 
-
-MESSAGE TARGET:
- 1. Client (only client)
- 2. Broadcast (except client)
- 3. Emit (all clients)
-
-*/

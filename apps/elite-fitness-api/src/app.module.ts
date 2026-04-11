@@ -19,10 +19,18 @@ import { SocketModule } from './socket/socket.module';
       autoSchemaFile: true, 
       formatError: (error: T) => {
         console.log('error:', error);
+        const validationMessage =
+          error?.extensions?.originalError?.message ||
+          error?.extensions?.exception?.response?.message ||
+          error?.extensions?.response?.message;
+
+        const normalizedMessage = Array.isArray(validationMessage)
+          ? validationMessage.join(', ')
+          : validationMessage;
+
         const graphQLFormattedError = {
           code: error?.extensions.code,
-          message: 
-            error?.extensions?.exception?.response?.message || error?.extensions?.response?.message || error?.message,
+          message: normalizedMessage || error?.message,
         };
         console.log('GRAPHQL GLOBAL ERR:', graphQLFormattedError);
         return graphQLFormattedError;

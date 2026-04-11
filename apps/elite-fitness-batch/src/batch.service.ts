@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Member } from 'apps/elite-fitness-api/src/libs/dto/member/member';
-import { Property } from 'apps/elite-fitness-api/src/libs/dto/property/property';
-import { MemberStatus, MemberType } from 'apps/elite-fitness-api/src/libs/enums/member.enum';
-import { PropertyStatus } from 'apps/elite-fitness-api/src/libs/enums/property.enum';
+import { Member } from '../../elite-fitness-api/src/libs/dto/member/member';
+import { Property } from '../../elite-fitness-api/src/libs/dto/property/property';
+import { MemberStatus, MemberType } from '../../elite-fitness-api/src/libs/enums/member.enum';
+import { PropertyStatus } from '../../elite-fitness-api/src/libs/enums/property.enum';
 import { Model } from 'mongoose';
 
 @Injectable()
