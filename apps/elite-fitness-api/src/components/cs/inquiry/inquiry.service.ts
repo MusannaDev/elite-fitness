@@ -26,7 +26,7 @@ export class InquiryService {
 			input.memberId = memberId;
 			return await this.inquiryModel.create(input);
 		} catch (err) {
-			console.log('Error, InquiryService.createInquiry:', err.message);
+			console.log('Error, InquiryService.createInquiry:', err);
 			throw new BadRequestException(Message.CREATE_FAILED);
 		}
 	}
