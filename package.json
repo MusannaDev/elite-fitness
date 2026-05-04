@@ -15,7 +15,7 @@
     "start:dev:batch": "nest start elite-fitness-batch --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "NODE_ENV=production node dist/apps/elite-fitness-api/main",
-    "start:prod:batch": "NODE_ENV=production node dist/apps/elite-fitness-batch/main.js",
+    "start:prod:batch": "NODE_ENV=production node dist/apps/elite-fitness-batch/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
