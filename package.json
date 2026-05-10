@@ -6,9 +6,7 @@
   "private": true,
   "license": "ITC",
   "scripts": {
-    "build": "nest build",
-    "build:api": "nest build elite-fitness-api",
-    "build:batch": "nest build elite-fitness-batch",
+    "build": "nest build elite-fitness-api && nest build elite-fitness-batch",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
