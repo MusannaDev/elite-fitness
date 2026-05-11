@@ -9,6 +9,8 @@ services:
     ports:
       - 4001:3004
 
+    env_file:
+      - .env
     volumes:
       - ./:/usr/src/elite-fitness
 
