@@ -1,5 +1,7 @@
 import { registerEnumType } from '@nestjs/graphql';
 
+// cspell:ignore SALESMANAGERS
+
 export enum CommentStatus {
 	ACTIVE = 'ACTIVE',
 	DELETE = 'DELETE',

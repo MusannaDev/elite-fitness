@@ -32,7 +32,8 @@ export class CommentService {
     try{
       result = await this.commentModel.create(input);
     } catch(err) {
-      console.log('Error, Service.model:', err.message);
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      console.log('Error, Service.model:', errorMessage);
       throw new BadGatewayException(Message.CREATE_FAILED);
     }
 
