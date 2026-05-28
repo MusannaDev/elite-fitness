@@ -1,7 +1,5 @@
 import { registerEnumType } from '@nestjs/graphql';
 
-// cspell:ignore SALESMANAGERS
-
 export enum CommentStatus {
 	ACTIVE = 'ACTIVE',
 	DELETE = 'DELETE',
@@ -17,8 +15,6 @@ export enum CommentGroup {
 	PRODUCTS = 'PRODUCTS',
 	EQUIPMENTS = 'EQUIPMENTS',
 	CLOTHES = 'CLOTHES',
-	TRAINERS = 'TRAINERS',
-	SALESMANAGERS = 'SALESMANAGERS',
 }
 registerEnumType(CommentGroup, {
 	name: 'CommentGroup',
