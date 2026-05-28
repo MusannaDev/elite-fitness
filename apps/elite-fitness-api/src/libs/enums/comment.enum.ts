@@ -12,6 +12,11 @@ export enum CommentGroup {
 	MEMBER = 'MEMBER',
 	ARTICLE = 'ARTICLE',
 	PROPERTY = 'PROPERTY',
+	PRODUCTS = 'PRODUCTS',
+	EQUIPMENTS = 'EQUIPMENTS',
+	CLOTHES = 'CLOTHES',
+	TRAINERS = 'TRAINERS',
+	SALESMANAGERS = 'SALESMANAGERS',
 }
 registerEnumType(CommentGroup, {
 	name: 'CommentGroup',
