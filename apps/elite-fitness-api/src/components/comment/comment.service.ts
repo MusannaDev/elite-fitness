@@ -13,9 +13,6 @@ import { lookupMember, shapeIntoMongoObjectId } from '../../libs/config';
 import { T } from '../../libs/types/common';
 import { Comment, Comments } from '../../libs/dto/comment/comment';
 import { PropertyService } from '../property/property.service';
-import { ProductService } from '../product/product.service';
-import { EquipmentService } from '../equipment/equipment.service';
-import { ClothesService } from '../clothes/clothes.service';
 
 @Injectable()
 export class CommentService {
@@ -25,9 +22,6 @@ export class CommentService {
     private viewService: ViewService,
     private boardArticleService: BoardArticleService,
     private propertyService: PropertyService,
-    private productService: ProductService,
-    private equipmentService: EquipmentService,
-    private clothesService: ClothesService,
   ) {}
 
 
@@ -60,35 +54,9 @@ export class CommentService {
         break;
 
       case CommentGroup.MEMBER:
-      case CommentGroup.TRAINERS:
-      case CommentGroup.SALESMANAGERS:
         await this.memberService.memberStatsEditor({
           _id: input.commentRefId,
           targetKey: 'memberComments',
-          modifier: 1
-        });
-        break;
-
-      case CommentGroup.PRODUCTS:
-        await this.productService.productStatsEditor({
-          _id: input.commentRefId,
-          targetKey: 'productComments',
-          modifier: 1
-        });
-        break;
-
-      case CommentGroup.EQUIPMENTS:
-        await this.equipmentService.equipmentStatsEditor({
-          _id: input.commentRefId,
-          targetKey: 'equipmentComments',
-          modifier: 1
-        });
-        break;
-
-      case CommentGroup.CLOTHES:
-        await this.clothesService.clotheStatsEditor({
-          _id: input.commentRefId,
-          targetKey: 'clotheComments',
           modifier: 1
         });
         break;
